@@ -10,8 +10,6 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,13 +18,16 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @ORM\Table()
  * @ORM\Entity
  */
-class User extends BaseEntity implements UserInterface, EquatableInterface, \Serializable{
+class User extends BaseEntity implements UserInterface{
 
-
+    /**
+     * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank( message = "поле E-mail обязательно для заполнения" )
+     */
     protected $username;
 
     /**
-     * @Assert\NotBlank( message = "Поле фамилия обязательно для заполнения" )
+     * @Assert\NotBlank( message = "Поле Email обязательно для заполнения" )
      * @Assert\Length( max = "35", maxMessage = "Максимум  35 символов")
      * @Assert\Regex(pattern= "/^[a-zа-яA-ZА-Я]+$/u", message="Неверный формат ввода.")
      * @ORM\Column(type="string", length=100)
@@ -50,7 +51,7 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
 
     /**
      * @Assert\NotBlank( message = "Поле пароль обязательно для заполнения" )
-     * @ORM\Column(type="string", length=25, nullable=true)
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
     protected $password = '1';
 
@@ -67,20 +68,9 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
     protected $status = 0;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Role")
-     * @ORM\JoinTable(name="user_role",
-     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="role_id", referencedColumnName="id")}
-     * )
-     *
-     * @var ArrayCollection $userRoles
+     * @ORM\Column(type="string", length=150, nullable=true)
      */
-    protected $userRoles;
-
-
-    public function __construct(){
-        $this->userRoles = new ArrayCollection();
-    }
+    protected $roles;
 
     public function __toString()
     {
@@ -202,6 +192,10 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
         $this->status = $status;
     }
 
+    public function __construct()
+    {
+        $this->roles = 'ROLE_AGENT';
+    }
 
     public function checkRole($role)
     {
@@ -245,14 +239,26 @@ class User extends BaseEntity implements UserInterface, EquatableInterface, \Ser
             ) = unserialize($serialized);
     }
 
-
-    public function getUserRoles()
-    {
-        return $this->userRoles;
-    }
-
+    /**
+     * @return mixed
+     */
     public function getRoles()
     {
-        return $this->getUserRoles()->toArray();
+        return explode(';', $this->roles);
     }
+
+    /**
+     * @param mixed $roles
+     */
+    public function setRoles($roles)
+    {
+        if (is_array($roles)) {
+            $roles = implode($roles, ';');
+        }
+
+        $this->roles = $roles;
+    }
+
+
+
 }

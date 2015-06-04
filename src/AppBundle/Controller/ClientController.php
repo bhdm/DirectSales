@@ -17,6 +17,7 @@ use AppBundle\Form\ClientType;
  */
 class ClientController extends Controller{
     const ENTITY_NAME = 'Client';
+
     /**
      * @Security("has_role('ROLE_ADMIN')")
      * @Route("/", name="client_list")

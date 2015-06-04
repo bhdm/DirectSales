@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -13,7 +14,6 @@ class AuthController extends Controller
 {
 
     /**
-     * @Security("has_role('ROLE_OPERATOR')")
      * @Route("/", name="main")
      */
     public function indexAction(){
@@ -24,7 +24,26 @@ class AuthController extends Controller
 //        }else{
 //            return $this->redirect($this->generateUrl('panel_user_list'));
 //        }
+
+//        $manager = $this->getDoctrine()->getManager();
+//        $user = new User();
+//        $user->setFirstName('admin');
+//        $user->setLastName('admin');
+//        $user->setSurName('admin');
+//        $user->setUsername('admin');
+//        $user->setCreated(new \DateTime());
+//        $user->setUpdated(new \DateTime());
+//        $user->setSalt(md5(time()));
+//        $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
+//        $password = $encoder->encodePassword('admin', $user->getSalt());
+//        $user->setPassword($password);
+//        $user->setRoles('ROLE_ADMIN');
+//
+//        $manager->persist($user);
+//        $manager->flush();
     }
+
+
 
     /**
      * @Route("/login", name="login")

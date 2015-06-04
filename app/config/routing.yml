@@ -7,12 +7,12 @@ fos_js_routing:
     resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
 
 
-_security_login:
-    pattern:  /login
-    defaults: { _controller: AppBundle:Auth:login }
+#_security_login:
+#    pattern:  /login
+#    defaults: { _controller: AppBundle:Auth:login }
 
-_security_check:
+login_check:
     pattern:  /login_check
 
-_security_logout:
+login_logout:
     pattern:  /logout
