@@ -29,6 +29,8 @@ framework:
 twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+    form:
+        resources: ['AppBundle::bootstrap_form_theme.html.twig']
 
 # Assetic Configuration
 assetic:
@@ -73,7 +75,13 @@ doctrine:
                 week: AppBundle\Dql\Week
                 year: AppBundle\Dql\Year
                 day: AppBundle\Dql\Day
-                DATE_FORMAT: CRM\MainBundle\Dql\DateFormat
+                DATE_FORMAT: AppBundle\Dql\DateFormat
+
+#stof_doctrine_extensions:
+#    orm:
+#        default:
+#            sluggable: true
+#            timestampable: true
 
 swiftmailer:
     transport: "%mailer_transport%"

@@ -34,7 +34,7 @@
         "braincrafted/bootstrap-bundle": "dev-master",
         "knplabs/knp-paginator-bundle": "~2.4",
         "gregwar/captcha-bundle": "dev-master",
-        "friendsofsymfony/http-cache-bundle": "~1.0",
+        "friendsofsymfony/http-cache-bundle": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

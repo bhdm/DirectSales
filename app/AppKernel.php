@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
             new Liuggio\ExcelBundle\LiuggioExcelBundle(),
+//            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new AppBundle\AppBundle(),
         );
 

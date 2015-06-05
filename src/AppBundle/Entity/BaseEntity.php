@@ -17,14 +17,12 @@ class BaseEntity
     protected $id;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime", nullable = true)
      */
     protected $created;
 
     /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable = true)
      */
     protected $updated;
 
@@ -44,8 +42,11 @@ class BaseEntity
     /**
      * @param mixed $created
      */
-    public function setCreated($created)
+    public function setCreated($created = null)
     {
+        if ($created == null){
+            $created = new \DateTime();
+        }
         $this->created = $created;
     }
 
@@ -92,8 +93,11 @@ class BaseEntity
     /**
      * @param mixed $updated
      */
-    public function setUpdated($updated)
+    public function setUpdated($updated = null)
     {
+        if ($updated == null){
+            $updated = new \DateTime();
+        }
         $this->updated = $updated;
     }
 

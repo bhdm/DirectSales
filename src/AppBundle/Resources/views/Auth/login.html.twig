@@ -4,7 +4,9 @@
     <div class="col-sm-4"></div>
     <div class="col-md-4">
         <div class="well">
-            {{ dump(error) }}
+            {% if error.message is defined %}
+                <span class="text-danger">{{ error.message }}</span><br /><br />
+            {% endif %}
             <form method="POST" action="{{ path('login_check') }}">
                 {#<input type="text" class="form-control" placeholder="Email" required autofocus name="_username">#}
                 <div class="input-group">

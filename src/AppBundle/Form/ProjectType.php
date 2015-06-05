@@ -16,6 +16,7 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('title', null, array('label' => 'Название проекта'))
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
     }
     

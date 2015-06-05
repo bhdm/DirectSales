@@ -63,6 +63,7 @@
                 {% include 'AppBundle::menu.html.twig' %}
             </div><!-- /span-3 -->
             <div class="col-sm-9">
+                {% block breadcrumb %}{% endblock %}
                 {% block content %}{% endblock %}
             </div><!--/col-span-9-->
         {% endblock %}
