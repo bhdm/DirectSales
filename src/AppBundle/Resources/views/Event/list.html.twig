@@ -2,8 +2,8 @@
 
 {% block breadcrumb %}
     <ul class="breadcrumb well">
-        <li>Список проектов</li>
-        <li><a href="{{ path('project_add') }}"><span class="btn btn-primary">Добавить</span></a></li>
+        <li>Список мероприятий проекта {{ project.title }}</li>
+        <li><a href="{{ path('event_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
     </ul>
 {% endblock %}
 
@@ -18,6 +18,8 @@
                         data-sortable="true">№</th>
                     <th data-field="title"
                         data-sortable="true">Название</th>
+                    <th data-field="type"
+                        data-sortable="true">Тип мероприятия</th>
                     <th data-field="setting"
                         data-sortable="false" class="setting">Инструменты</th>
                 </tr>
@@ -25,17 +27,17 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td><a href="{{ path('event_list',{ 'projectId' : item.id }) }}">{{ item.title }}</a></td>
+                    <td>{{ item.title }}</td>
                     <td class="setting">
                         {% spaceless %}
-                        <a href="{{ path('project_edit',{'id' : item.id}) }}">
+                        <a href="{{ path('event_edit',{'id' : item.id}) }}">
                             <button type="button" class="btn btn-default btn-bg">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                         </a>
                             &nbsp;
                             &nbsp;
-                        <a href="{{ path('project_remove',{'id' : item.id}) }}">
+                        <a href="{{ path('event_remove',{'id' : item.id}) }}">
                             <button type="button" class="btn btn-default btn-bg">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>

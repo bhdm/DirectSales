@@ -20,7 +20,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Event extends BaseEntity{
 
     /**
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="events")
+     * @ORM\ManyToOne(targetEntity="Project", inversedBy="events")
      */
     protected $project;
 

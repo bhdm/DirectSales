@@ -19,11 +19,12 @@ class EventController extends Controller{
     const ENTITY_NAME = 'Event';
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/", name="event_list")
+     * @Route("/{projectId}", name="event_list")
      * @Template()
      */
-    public function listAction(){
-        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findAll();
+    public function listAction($projectId){
+        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
+        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -32,15 +33,16 @@ class EventController extends Controller{
             20
         );
 
-        return array('pagination' => $pagination);
+        return array('pagination' => $pagination, 'project' => $project);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/add", name="event_add")
+     * @Route("/add/{projectId}", name="event_add")
      * @Template()
      */
-    public function addAction(Request $request){
+    public function addAction(Request $request, $projectId){
+        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $em = $this->getDoctrine()->getManager();
         $item = new Event();
         $form = $this->createForm(new EventType($em), $item);
@@ -49,10 +51,11 @@ class EventController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
+                $item->setProject($project);
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('event_list'));
+                return $this->redirect($this->generateUrl('event_list', array('projectId' => $projectId)));
             }
         }
         return array('form' => $form->createView());
