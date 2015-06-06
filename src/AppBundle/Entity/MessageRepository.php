@@ -19,13 +19,23 @@ class MessageRepository extends EntityRepository
         return $res->getQuery()->getResult();
     }
 
-    public function findUser(){
+    public function findUser($operatorId){
         $res = $this->getEntityManager()->createQueryBuilder()
-            ->select('m')
+            ->select('s.id sid, s.lastName sLastName, s.firstName sFirstName')
+            ->addSelect('r.id rid, r.lastName rLastName, r.firstName rFirstName')
             ->from('AppBundle:Message','m')
-//            ->leftJoin('m.sender', 'u')
-            ->groupBy('m.sender')
+            ->leftJoin('m.sender','s')
+            ->leftJoin('m.receiver','r')
+            ->where( 'm.sender = '.$operatorId.' OR '.'m.receiver= '.$operatorId )
             ->orderBy('m.created','DESC');
-        return $res->getQuery()->getResult();
+        $res =  $res->getQuery()->getResult();
+
+        $users = array();
+        foreach ($res as $item){
+            $users[$item['sid']] = $item['sLastName'].' '.$item['sFirstName'];
+            $users[$item['rid']] = $item['rLastName'].' '.$item['rFirstName'];
+        }
+
+        return $users;
     }
 }

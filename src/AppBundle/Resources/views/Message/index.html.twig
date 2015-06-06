@@ -1,7 +1,7 @@
 {% extends 'AppBundle::layout.html.twig' %}
 
 
-{% block crosh %}
+{% block breadcrumb %}
     <ul class="breadcrumb well">
         <li>Сообщения</li>
         {#<li><a href="{{ path('event_question_add',{'eventId' : event.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>#}
@@ -13,9 +13,9 @@
         <div class="row">
             {% if senders %}
                 <div class="col-md-3">
-                    {% for u in senders %}
+                    {% for k, u in senders %}
                         <ul class="menu">
-                            <li><a href="{{ path('panel_message',{'operatorId' : u.sender.id }) }}">{{ u.sender.username }}</a></li>
+                            <li><a href="{{ path('panel_message',{'operatorId' : k }) }}">{{ u }}</a></li>
                         </ul>
                     {% endfor %}
                 </div>
