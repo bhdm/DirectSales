@@ -25,7 +25,7 @@ class ClientController extends Controller{
     public function listAction($projectId){
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
-
+        $status = $this->getDoctrine()->getRepository('AppBundle:ClientStatus')->findAll();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
@@ -33,7 +33,7 @@ class ClientController extends Controller{
             20
         );
 
-        return array('pagination' => $pagination, 'project' => $project);
+        return array('pagination' => $pagination, 'project' => $project, 'status' => $status);
     }
 
     /**
@@ -95,6 +95,19 @@ class ClientController extends Controller{
             $em->remove($item);
             $em->flush();
         }
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+    /**
+     * @Route("/status/{clientId}/{statusId}", name="client_status")
+     * @Security("has_role('ROLE_AGENT')")
+     */
+    public function statusAction(Request $request, $clientId, $statusId){
+        $em = $this->getDoctrine()->getManager();
+        $item = $em->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($clientId);
+        $status = $em->getRepository('AppBundle:ClientStatus')->findOneById($statusId);
+        $item->setStatus($status);
+        $em->flush();
         return $this->redirect($request->headers->get('referer'));
     }
 }

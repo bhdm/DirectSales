@@ -35,7 +35,21 @@
                 <tr>
                     <td>{{ item.id }}</td>
                     <td>{{ item }}</td>
-                    <td>{{ item.status }}</td>
+                    <td>
+                    <div class="dropdown">
+                        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+                            {{ item.status }}
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
+                            {% for s in status %}
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="{{ path('client_status', { 'clientId' : item.id, 'statusId' : s.id }) }}">{{ s }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    </td>
                     <td class="setting">
                         {% spaceless %}
                         <a href="{{ path('client_edit',{'projectId' : project.id, 'id' : item.id}) }}">
