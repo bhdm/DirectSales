@@ -33,9 +33,9 @@ class UserType extends AbstractType
             ->add('firstName', null, array('label' => 'Имя'))
             ->add('surName', null, array('label' => 'Отчество'))
             ->add('phone', null, array('label' => 'Телефон'))
-            ->add('password')
-            ->add($builder->create('roles',  'choice', array('required' => true,    'label' => 'Роль пользователя ', 'choices' => $role, 'attr'=> array('data-placeholder'=>'Выберите роль'))))
-            ->add($builder->create('status',  'choice', array('required' => false,    'label' => 'Тип', 'choices' => $status, 'attr'=> array('data-placeholder'=>'Выберите статус'))))
+            ->add('password', 'repeated', array('type' => 'password', 'invalid_message' => 'пароли не совпадают', 'first_options'  => array('label' => 'Пароль'),
+                'second_options' => array('label' => 'Повторите пароль'),))
+            ->add('role', 'choice', array('label' => 'Роль', 'choices' => $role))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
     }

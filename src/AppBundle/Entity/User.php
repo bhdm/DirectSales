@@ -304,6 +304,16 @@ class User extends BaseEntity implements UserInterface{
         $this->roles = $roles;
     }
 
+    public function getRole(){
+        return explode(';', $this->roles)[0];
+    }
+
+    public function setRole($roles){
+        if (is_array($roles)) {
+            $roles = implode($roles, ';');
+        }
+    }
+
     /**
      * @return mixed
      */

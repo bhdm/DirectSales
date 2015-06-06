@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Core\Encoder\MessageDigestPasswordEncoder;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\User;
@@ -58,7 +59,11 @@ class UserController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
-                $item->setProject($project);
+                $item->getProjects()->add($project);
+                $item->setSalt(md5(time()));
+                $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
+                $password = $encoder->encodePassword($item->getPassword(), $item->getSalt());
+                $item->setPassword($password);
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);

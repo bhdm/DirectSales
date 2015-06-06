@@ -38,14 +38,14 @@
                     <td>{{ item.status }}</td>
                     <td class="setting">
                         {% spaceless %}
-                        <a href="{{ path('event_edit',{'id' : item.id}) }}">
+                        <a href="{{ path('client_edit',{'projectId' : project.id, 'id' : item.id}) }}">
                             <button type="button" class="btn btn-default btn-bg">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                         </a>
                             &nbsp;
                             &nbsp;
-                        <a href="{{ path('event_remove',{'id' : item.id}) }}">
+                        <a href="{{ path('client_remove',{'id' : item.id}) }}">
                             <button type="button" class="btn btn-default btn-bg">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>

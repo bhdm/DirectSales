@@ -70,10 +70,6 @@ class Client extends BaseEntity{
      */
     protected $adrs;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    protected $status;
 
     /**
      * @ORM\Column(type="text", nullable = true)
@@ -89,6 +85,12 @@ class Client extends BaseEntity{
      * @ORM\OneToMany(targetEntity="EventAnswer", mappedBy="client")
      */
     protected $answers;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="ClientStatus", inversedBy="clients")
+     */
+    protected $status;
+
 
     public function __toString()
     {

@@ -31,7 +31,13 @@ class ClientType extends AbstractType
             ->add('lastName', null, array('label' => 'Фамилия'))
             ->add('firstName', null, array('label' => 'Имя'))
             ->add('surName', null, array('label' => 'Отчество'))
-            ->add('birthDate', null, array('label' => 'Фамилия'))
+            ->add('birthDate', 'date', array(
+                'label'  => 'Дата рождения',
+                'years'  => range(date('Y') - 111, date('Y')-17),
+                'data'   => new \DateTime('1970-01-01'),
+                'format' => 'dd MMMM yyyy',
+                'attr' => array('class' => 'date-select')
+            ))
             ->add($builder->create('gender',  'choice', array('required' => true,    'label' => 'Пол', 'choices' => $gender, 'attr'=> array('data-placeholder'=>'Выберите пол'))))
             ->add('jobPlace', null, array('label' => 'Место работы'))
             ->add('jobPost', null, array('label' => 'Специальность'))
@@ -39,7 +45,7 @@ class ClientType extends AbstractType
             ->add('adrs', null, array('label' => 'Адрес проживания'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('email', null, array('label' => 'Email'))
-            ->add($builder->create('status',  'choice', array('required' => true, 'label' => 'Статус', 'choices' => $status)))
+            ->add('status', null, array('label' => 'Статус'))
             ->add('comment', null, array('label' => 'Комментарий'))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;

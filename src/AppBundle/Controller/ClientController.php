@@ -63,10 +63,11 @@ class ClientController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/edit/{id}", name="client_edit")
+     * @Route("/edit/{projectId}{id}", name="client_edit")
      * @Template()
      */
-    public function editAction(Request $request, $id){
+    public function editAction(Request $request, $projectId, $id){
+        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $em = $this->getDoctrine()->getManager();
         $item = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($id);
         $form = $this->createForm(new ClientType($em), $item);
@@ -77,7 +78,7 @@ class ClientController extends Controller{
                 $item = $formData->getData();
                 $em->flush($item);
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('client_list'));
+                return $this->redirect($this->generateUrl('client_list',array('projectId' => $project->getId())));
             }
         }
         return array('form' => $form->createView());

@@ -44,8 +44,8 @@
                         <a class="dropdown-toggle" role="button" data-toggle="dropdown" href="#">
                             <i class="glyphicon glyphicon-user"></i> {{ app.user }} <span class="caret"></span></a>
                         <ul id="g-account-menu" class="dropdown-menu" role="menu">
-                            <li><a href="#"> Профиль</a></li>
-                            <li><a href="#"><i class="glyphicon glyphicon-lock"></i> Выход</a></li>
+                            <li><a href="{{ path('user_edit',{'id' : app.user.id }) }}"> Профиль</a></li>
+                            <li><a href="{{ path('login_logout') }}"><i class="glyphicon glyphicon-lock"></i> Выход</a></li>
                         </ul>
                     </li>
                 </ul>
