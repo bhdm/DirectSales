@@ -34,7 +34,13 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.title }}</td>
+                    <td>
+                        {% if item.type == 'Обход' %}
+                            <a href="{{ path('event_answer_list', {'eventId' : item.id}) }}" title="Опрос">
+                                {{ item.title }}
+                            </a>
+                        {% endif %}
+                    </td>
                     <td>{{ item.type }}</td>
                     <td class="setting">
                         {% spaceless %}

@@ -96,4 +96,22 @@ class EventQuestionController extends Controller{
         }
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/{eventId}/answer", name="event_answer_list")
+     * @Template()
+     */
+    public function answerAction(Request $request, $eventId){
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
+        $questions = $event->getQuestions();
+        $project = $event->getProject();
+        $clients = $project->getClients();
+
+        return array(
+            'event' => $event,
+            'questions' => $questions,
+            'clients' => $clients,
+        );
+    }
 }
