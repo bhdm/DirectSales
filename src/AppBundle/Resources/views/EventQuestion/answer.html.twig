@@ -9,32 +9,36 @@
 
 {% block content %}
     <div class="well">
-        <form method="POST">
-            <div class="form-group">
-                <label class="col-sm-4 control-label required">Выберите клиента</label>
-                <div class="col-sm-8">
-                    <select id="appbundle_event_type" name="client" data-placeholder="Выберите клиента" class="form-control">
-                        {% for c in clients %}
-                            <option value="{{ c.id }}">{{ c }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-            <br />
-            {% for q in questions %}
+        <div class="row">
+            <form method="POST">
                 <div class="form-group">
-                    <label class="col-sm-4 control-label required">{{ q.title }}</label>
+                    <label class="col-sm-4 control-label required">Выберите клиента</label>
                     <div class="col-sm-8">
-                        <input type="text" name="answer[{{ q.id }}]" value="" class="form-control">
+                        <select id="appbundle_event_type" name="client" data-placeholder="Выберите клиента" class="form-control">
+                            {% for c in clients %}
+                                <option value="{{ c.id }}">{{ c }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
-            {% endfor %}
-            <div class="form-group">
-                <div class="col-sm-4"></div>
-                <div class="col-sm-8">
-                    <button type="submit"  class="btn-primary pull-right btn">Сохранить</button>
+                <br />
+                <br />
+                <br />
+                {% for q in questions %}
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label required">{{ q.title }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="answer[{{ q.id }}]" value="" class="form-control">
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="form-group">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
+                        <button type="submit"  class="btn-primary pull-right btn">Сохранить</button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 {% endblock %}

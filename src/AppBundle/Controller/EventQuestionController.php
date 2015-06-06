@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EventAnswer;
 use AppBundle\Entity\EventQuestion;
 use AppBundle\Form\EventQuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -107,6 +108,25 @@ class EventQuestionController extends Controller{
         $questions = $event->getQuestions();
         $project = $event->getProject();
         $clients = $project->getClients();
+
+        if ($request->getMethod() == 'POST'){
+            $em = $this->getDoctrine()->getManager();
+            $client = $this->getDoctrine()->getRepository('AppBundle:Client')->findOneById($request->request->get('client'));
+            $date = new \DateTime();
+            foreach ( $request->request->get('answer') as $k => $a ){
+                $question = $this->getDoctrine()->getRepository('AppBundle:EventQuestion')->findOneById($k);
+                $answer = new EventAnswer();
+                $answer->setUser($this->getUser());
+                $answer->setClient($client);
+                $answer->setQuestion($question);
+                $answer->setTitle($a);
+                $answer->setCreated($date);
+                $answer->setUpdated($date);
+                $em->persist($answer);
+            }
+            $em->flush($answer);
+            return $this->redirect($this->generateUrl('event_list', array('projectId' => $event->getProject()->getId())));
+        }
 
         return array(
             'event' => $event,

@@ -46,7 +46,7 @@ class MessageController extends Controller
         }
 
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-            $senders = $this->getDoctrine()->getRepository('AppBundle:Message')->findUser($operatorId);
+            $senders = $this->getDoctrine()->getRepository('AppBundle:Message')->findUser($this->getUser()->getId());
         }else{
             $senders = null;
         }
