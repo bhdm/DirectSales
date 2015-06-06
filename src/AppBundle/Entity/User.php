@@ -87,6 +87,17 @@ class User extends BaseEntity implements UserInterface{
      */
     protected $answers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="sender")
+     */
+    protected $sent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="receiver")
+     */
+    protected $received;
+
+
     public function __toString()
     {
         return $this->lastName . ' '
@@ -97,6 +108,9 @@ class User extends BaseEntity implements UserInterface{
 
     public function __construct(){
         $this->projects = new ArrayCollection();
+        $this->sent = new ArrayCollection();
+        $this->received = new ArrayCollection();
+
         $this->roles = 'ROLE_AGENT';
     }
     /**
@@ -263,6 +277,22 @@ class User extends BaseEntity implements UserInterface{
     }
 
     /**
+     * @return mixed
+     */
+    public function getRolesString()
+    {
+        $roles =  explode(';', $this->roles);
+        $role = '';
+        foreach ($roles as $item){
+            if ($item == 'ROLE_ADMIN') $role .= 'Администратор ';
+            elseif ($item == 'ROLE_OPERATOR') $role .= 'Оператор ';
+            elseif ($item == 'ROLE_AGENT') $role .= 'Агент ';
+            else  $role .= 'Другое ';
+        }
+        return $role;
+    }
+
+    /**
      * @param mixed $roles
      */
     public function setRoles($roles)
@@ -323,4 +353,52 @@ class User extends BaseEntity implements UserInterface{
     }
 
 
+    /**
+     * @return mixed
+     */
+    public function getSent()
+    {
+        return $this->sent;
+    }
+
+    /**
+     * @param mixed $sent
+     */
+    public function setSent($sent)
+    {
+        $this->sent = $sent;
+    }
+
+    public function addSent($sent){
+        $this->sent[] = $sent;
+    }
+
+    public function removeSent($sent){
+        $this->sent->removeElement($sent);
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getReceived()
+    {
+        return $this->received;
+    }
+
+    /**
+     * @param mixed $received
+     */
+    public function setReceived($received)
+    {
+        $this->received = $received;
+    }
+
+    public function addReceived($received){
+        $this->received[] = $received;
+    }
+
+    public function removeReceived($received){
+        $this->received->removeElement($received);
+    }
 }

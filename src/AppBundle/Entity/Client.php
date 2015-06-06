@@ -76,7 +76,7 @@ class Client extends BaseEntity{
     protected $status;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable = true)
      */
     protected $comment;
 

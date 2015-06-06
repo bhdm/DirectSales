@@ -18,13 +18,20 @@ use AppBundle\Form\UserType;
 class UserController extends Controller{
     const ENTITY_NAME = 'User';
     /**
-     * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/{projectId}", name="user_list")
+     * @Security("has_role('ROLE_AGENT')")
+     * @Route("/{projectId}", name="user_list", defaults={"projectId" = null })
      * @Template()
      */
-    public function listAction($projectId){
-        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-        $items = $project->getUsers();
+    public function listAction($projectId = null){
+        if ($projectId){
+            $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
+            $items = $project->getUsers();
+        }else{
+            if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
+                $project = null;
+                $items = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+            }
+        }
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -38,10 +45,10 @@ class UserController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/add/{projectId}", name="user_add")
+     * @Route("/add/{projectId}", name="user_add", defaults={"projectId" = null })
      * @Template()
      */
-    public function addAction(Request $request, $projectId){
+    public function addAction(Request $request, $projectId = null){
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $em = $this->getDoctrine()->getManager();
         $item = new User();

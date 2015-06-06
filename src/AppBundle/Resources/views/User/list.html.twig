@@ -2,59 +2,66 @@
 
 {% block breadcrumb %}
     <ul class="breadcrumb well">
+        {% if project %}
         <li>{{ project.title }}</li>
         <li>Операторы</li>
         <li><a href="{{ path('user_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% else %}
+            <li>Операторы</li>
+            <li><a href="{{ path('user_add') }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% endif %}
     </ul>
 {% endblock %}
 
 {% block content %}
     <div class="well">
-        <ul class="nav nav-tabs nav-justified">
-            <li role="presentation"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
-            <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Агенты</a></li>
-            <li role="presentation" class="active"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
-        </ul>
-        <br />
+        {% if project != null %}
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
+                <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Агенты</a></li>
+                <li role="presentation" class="active"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
+            </ul>
+            <br />
+        {% endif %}
         <table class="table" data-toggle="table"
                data-sort-name="number"
                data-sort-order="desc">
             <thead>
-                <tr>
-                    <th data-field="number"
-                        data-sortable="true">№</th>
-                    <th data-field="title"
-                        data-sortable="true">ФИО</th>
-                    <th data-field="type"
-                        data-sortable="true">Роль</th>
-                    <th data-field="setting"
-                        data-sortable="false" class="setting">Инструменты</th>
-                </tr>
+            <tr>
+                <th data-field="number"
+                    data-sortable="true">№</th>
+                <th data-field="title"
+                    data-sortable="true">ФИО</th>
+                <th data-field="type"
+                    data-sortable="true">Роль</th>
+                <th data-field="setting"
+                    data-sortable="false" class="setting">Инструменты</th>
+            </tr>
             </thead>
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.id }}</td>
                     <td>{{ item }}</td>
                     <td>
-                        {{ item.role }}
-                        {% if item.status != null %}
-                            item.status
+                        {{ item.rolesString }}
+                        {% if item.status != 0 %}
+                            {{ item.status }}
                         {% endif %}
                     </td>
                     <td class="setting">
                         {% spaceless %}
-                        <a href="{{ path('event_edit',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-bg">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                        </a>
+                            <a href="{{ path('user_edit',{'id' : item.id}) }}">
+                                <button type="button" class="btn btn-default btn-bg">
+                                    <span class="glyphicon glyphicon-pencil"></span>
+                                </button>
+                            </a>
                             &nbsp;
                             &nbsp;
-                        <a href="{{ path('event_remove',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-bg">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </a>
+                            <a href="{{ path('user_remove',{'id' : item.id}) }}">
+                                <button type="button" class="btn btn-default btn-bg">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                </button>
+                            </a>
                         {% endspaceless %}
                     </td>
                 </tr>
