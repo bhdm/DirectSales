@@ -40,7 +40,8 @@ class ClientType extends AbstractType
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('email', null, array('label' => 'Email'))
             ->add($builder->create('status',  'choice', array('required' => true, 'label' => 'Статус', 'choices' => $status)))
-            ->add('comment', null, array('label' => 'Комментарий'));
+            ->add('comment', null, array('label' => 'Комментарий'))
+            ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
     }
     

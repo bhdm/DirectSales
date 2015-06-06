@@ -39,6 +39,11 @@ class Project extends BaseEntity{
      */
     protected $clients;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="User", mappedBy="projects")
+     */
+    protected $users;
+
     public function __construct(){
         $this->events = new ArrayCollection();
         $this->clients = new ArrayCollection();
@@ -114,5 +119,22 @@ class Project extends BaseEntity{
     public function removeClient($client){
         $this->clients->removeElement($client);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param mixed $users
+     */
+    public function setUsers($users)
+    {
+        $this->users = $users;
+    }
+
 
 }

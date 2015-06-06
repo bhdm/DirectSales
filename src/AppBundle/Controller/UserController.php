@@ -7,29 +7,29 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Client;
-use AppBundle\Form\ClientType;
+use AppBundle\Entity\User;
+use AppBundle\Form\UserType;
 
 /**
- * Class ClientController
+ * Class UserController
  * @package AppBundle\Controller
- * @Route("/client")
+ * @Route("/user")
  */
-class ClientController extends Controller{
-    const ENTITY_NAME = 'Client';
+class UserController extends Controller{
+    const ENTITY_NAME = 'User';
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/{projectId}", name="client_list")
+     * @Route("/{projectId}", name="user_list")
      * @Template()
      */
     public function listAction($projectId){
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
+        $items = $project->getUsers();
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
-            $this->get('request')->query->get('client', 1),
+            $this->get('request')->query->get('user', 1),
             20
         );
 
@@ -38,14 +38,14 @@ class ClientController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/add/{projectId}", name="client_add")
+     * @Route("/add/{projectId}", name="user_add")
      * @Template()
      */
     public function addAction(Request $request, $projectId){
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $em = $this->getDoctrine()->getManager();
-        $item = new Client();
-        $form = $this->createForm(new ClientType($em), $item);
+        $item = new User();
+        $form = $this->createForm(new UserType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -55,7 +55,7 @@ class ClientController extends Controller{
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('client_list', array('projectId' => $projectId)));
+                return $this->redirect($this->generateUrl('user_list', array('projectId' => $projectId)));
             }
         }
         return array('form' => $form->createView());
@@ -63,13 +63,13 @@ class ClientController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/edit/{id}", name="client_edit")
+     * @Route("/edit/{id}", name="user_edit")
      * @Template()
      */
     public function editAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $item = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($id);
-        $form = $this->createForm(new ClientType($em), $item);
+        $form = $this->createForm(new UserType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -77,7 +77,7 @@ class ClientController extends Controller{
                 $item = $formData->getData();
                 $em->flush($item);
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('client_list'));
+                return $this->redirect($this->generateUrl('user_list'));
             }
         }
         return array('form' => $form->createView());
@@ -85,7 +85,7 @@ class ClientController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/remove/{id}", name="client_remove")
+     * @Route("/remove/{id}", name="user_remove")
      */
     public function removeAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();

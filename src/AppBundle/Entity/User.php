@@ -21,6 +21,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User extends BaseEntity implements UserInterface{
 
     /**
+     * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     */
+    protected $projects;
+
+    /**
      * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank( message = "поле E-mail обязательно для заполнения" )
      */
@@ -50,6 +55,11 @@ class User extends BaseEntity implements UserInterface{
     protected  $surName;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    protected  $phone;
+
+    /**
      * @Assert\NotBlank( message = "Поле пароль обязательно для заполнения" )
      * @ORM\Column(type="string", length=150, nullable=true)
      */
@@ -63,14 +73,19 @@ class User extends BaseEntity implements UserInterface{
     protected $salt;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", nullable = true)
      */
-    protected $status = 0;
+    protected $status;
 
     /**
      * @ORM\Column(type="string", length=150, nullable=true)
      */
     protected $roles;
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventAnswer", mappedBy="user")
+     */
+    protected $answers;
 
     public function __toString()
     {
@@ -80,6 +95,10 @@ class User extends BaseEntity implements UserInterface{
     }
 
 
+    public function __construct(){
+        $this->projects = new ArrayCollection();
+        $this->roles = 'ROLE_AGENT';
+    }
     /**
      * @return mixed
      */
@@ -192,10 +211,6 @@ class User extends BaseEntity implements UserInterface{
         $this->status = $status;
     }
 
-    public function __construct()
-    {
-        $this->roles = 'ROLE_AGENT';
-    }
 
     public function checkRole($role)
     {
@@ -259,6 +274,53 @@ class User extends BaseEntity implements UserInterface{
         $this->roles = $roles;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjects()
+    {
+        return $this->projects;
+    }
+
+    /**
+     * @param mixed $projects
+     */
+    public function setProjects($projects)
+    {
+        $this->projects = $projects;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
+    }
 
 
 }

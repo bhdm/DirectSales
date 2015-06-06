@@ -20,6 +20,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Event extends BaseEntity{
 
     /**
+     * @ORM\OneToMany(targetEntity="EventQuestion", mappedBy="event")
+     */
+    protected $questions;
+
+    /**
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="events")
      */
     protected $project;
@@ -81,4 +86,21 @@ class Event extends BaseEntity{
     {
         $this->title = $title;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
+
+    /**
+     * @param mixed $questions
+     */
+    public function setQuestions($questions)
+    {
+        $this->questions = $questions;
+    }
+
 }

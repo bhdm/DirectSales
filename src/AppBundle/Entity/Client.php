@@ -50,6 +50,16 @@ class Client extends BaseEntity{
     protected $jobPost;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    protected $phone;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $email;
+
+    /**
      * @ORM\Column(type="integer")
      * Стаж в годах
      */
@@ -74,6 +84,11 @@ class Client extends BaseEntity{
      * @ORM\ManyToOne(targetEntity="Project", inversedBy="clients")
      */
     protected $project;
+
+    /**
+     * @ORM\OneToMany(targetEntity="EventAnswer", mappedBy="client")
+     */
+    protected $answers;
 
     public function __toString()
     {
@@ -272,6 +287,54 @@ class Client extends BaseEntity{
     public function setSurName($surName)
     {
         $this->surName = $surName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param mixed $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
     }
 
 

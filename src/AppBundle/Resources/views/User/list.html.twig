@@ -3,17 +3,17 @@
 {% block breadcrumb %}
     <ul class="breadcrumb well">
         <li>{{ project.title }}</li>
-        <li>Мероприятия</li>
-        <li><a href="{{ path('event_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
+        <li>Операторы</li>
+        <li><a href="{{ path('user_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
     </ul>
 {% endblock %}
 
 {% block content %}
     <div class="well">
         <ul class="nav nav-tabs nav-justified">
-            <li role="presentation" class="active"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
+            <li role="presentation"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
             <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Агенты</a></li>
-            <li role="presentation"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
+            <li role="presentation" class="active"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
         </ul>
         <br />
         <table class="table" data-toggle="table"
@@ -24,9 +24,9 @@
                     <th data-field="number"
                         data-sortable="true">№</th>
                     <th data-field="title"
-                        data-sortable="true">Название</th>
+                        data-sortable="true">ФИО</th>
                     <th data-field="type"
-                        data-sortable="true">Тип мероприятия</th>
+                        data-sortable="true">Роль</th>
                     <th data-field="setting"
                         data-sortable="false" class="setting">Инструменты</th>
                 </tr>
@@ -34,8 +34,13 @@
             {% for item in pagination %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.title }}</td>
-                    <td>{{ item.type }}</td>
+                    <td>{{ item }}</td>
+                    <td>
+                        {{ item.role }}
+                        {% if item.status != null %}
+                            item.status
+                        {% endif %}
+                    </td>
                     <td class="setting">
                         {% spaceless %}
                         <a href="{{ path('event_edit',{'id' : item.id}) }}">
