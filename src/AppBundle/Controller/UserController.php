@@ -20,7 +20,7 @@ class UserController extends Controller{
     const ENTITY_NAME = 'User';
     /**
      * @Security("has_role('ROLE_AGENT')")
-     * @Route("/{projectId}", name="user_list", defaults={"projectId" = null })
+     * @Route("/{projectId}", name="user_list", defaults={"projectId" = null },  requirements={ "projectId": "\d+"}))
      * @Template()
      */
     public function listAction($projectId = null){
