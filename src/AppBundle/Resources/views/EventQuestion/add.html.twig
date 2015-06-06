@@ -1,0 +1,37 @@
+{% extends "AppBundle::layout_mini.html.twig" %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb well">
+        <li>{{ event.title }}</li>
+        <li><a href="{{ path('event_question_list',{'eventId' : event.id}) }}">Вопросы</a></li>
+        <li>Добавление</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="well">
+        <div class="row">
+            <form method="POST">
+                {{ form_widget(form) }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {#<script src="{{ asset('bundles/admin/ckeditor/ckeditor.js') }}"></script>#}
+    {#<script src="{{ asset('bundles/admin/ckeditor/styles.js') }}"></script>#}
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {#<link href="{{ asset('bundles/app/ckeditor/contents.css') }}" rel="stylesheet">#}
+    <style>
+        .frame{
+            width: 100%;
+        }
+    </style>
+
+{% endblock %}
+

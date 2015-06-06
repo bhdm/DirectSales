@@ -1,0 +1,39 @@
+<html>
+    <head>
+        {% block javascripts %}
+            <script src="{{ asset('bundles/app/js/jquery-1.11.1.min.js') }}"></script>
+            <script src="{{ asset('bundles/app/js/bootstrap.min.js') }}"></script>
+            <script>
+                $(document).ready(function(){
+                    $('.alignRight').click(function(){
+                        window.location.href = '{{ app.request.headers.get('referer') }}';
+                    });
+                });
+            </script>
+        {% endblock %}
+
+        {% block stylesheets %}
+            <link href=" {{ asset('bundles/app/css/bootstrap.min.css') }}" rel="stylesheet">
+            {% stylesheets filter='less'  '@AppBundle/Resources/public/less/*' %}
+            <link href="{{ asset_url }}" type="text/css" rel="stylesheet" media="all" />
+            {% endstylesheets %}
+            <style>
+                .setting{
+                    text-align: right;
+                }
+                body{
+                    background: #f5f5f5;
+                }
+                .alignRight{
+                    float: right;
+                }
+            </style>
+        {% endblock %}
+    </head>
+    <body>
+        {#<div class="row" style="width: 800px">#}
+                {% block breadcrumb %}{% endblock %}
+                {% block content %}{% endblock %}
+        {#</div>#}
+    </body>
+</html>

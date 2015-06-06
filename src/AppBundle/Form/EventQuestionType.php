@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class EventType extends AbstractType
+class EventQuestionType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -14,15 +14,8 @@ class EventType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $type = array(
-            'Собрание' => 'Собрание',
-            'Подписи' => 'Подписи',
-            'Обход' => 'Обход',
-        );
-
         $builder
-            ->add('title', null, array('label'=> 'Название события'))
-            ->add($builder->create('type',  'choice', array('required' => true,    'label' => 'Тип события', 'choices' => $type, 'attr'=> array('data-placeholder'=>'Выберите тип'))))
+            ->add('title', null, array('label' => 'Вопрос'))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
     }
@@ -33,7 +26,7 @@ class EventType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\Event'
+            'data_class' => 'AppBundle\Entity\EventQuestion'
         ));
     }
 
@@ -42,6 +35,6 @@ class EventType extends AbstractType
      */
     public function getName()
     {
-        return 'appbundle_event';
+        return 'appbundle_eventquestion';
     }
 }

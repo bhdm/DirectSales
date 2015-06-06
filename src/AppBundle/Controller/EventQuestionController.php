@@ -1,30 +1,30 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\EventQuestion;
+use AppBundle\Form\EventQuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Event;
-use AppBundle\Form\EventType;
 
 /**
  * Class EventController
  * @package AppBundle\Controller
- * @Route("/event")
+ * @Route("/event/question")
  */
-class EventController extends Controller{
-    const ENTITY_NAME = 'Event';
+class EventQuestionController extends Controller{
+    const ENTITY_NAME = 'EventQuestion';
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/{projectId}", name="event_list")
+     * @Route("/{eventId}", name="event_question_list")
      * @Template()
      */
-    public function listAction($projectId){
-        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
+    public function listAction($eventId){
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
+        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByEvent($event);
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -33,43 +33,43 @@ class EventController extends Controller{
             20
         );
 
-        return array('pagination' => $pagination, 'project' => $project);
+        return array('pagination' => $pagination, 'event' => $event);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/add/{projectId}", name="event_add")
+     * @Route("/add/{eventId}", name="event_question_add")
      * @Template()
      */
-    public function addAction(Request $request, $projectId){
-        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
+    public function addAction(Request $request, $eventId){
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
         $em = $this->getDoctrine()->getManager();
-        $item = new Event();
-        $form = $this->createForm(new EventType($em), $item);
+        $item = new EventQuestion();
+        $form = $this->createForm(new EventQuestionType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
-                $item->setProject($project);
+                $item->setEvent($event);
                 $em->persist($item);
                 $em->flush();
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('event_list', array('projectId' => $projectId)));
+                return $this->redirect($this->generateUrl('event_question_list', array('eventId' => $eventId)));
             }
         }
-        return array('form' => $form->createView());
+        return array('form' => $form->createView(), 'event' => $event);
     }
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/edit/{id}", name="event_edit")
+     * @Route("/edit/{id}", name="event_question_edit")
      * @Template()
      */
     public function editAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $item = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($id);
-        $form = $this->createForm(new EventType($em), $item);
+        $form = $this->createForm(new EventQuestionType($em), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -77,7 +77,7 @@ class EventController extends Controller{
                 $item = $formData->getData();
                 $em->flush($item);
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('event_list'));
+                return $this->redirect($this->generateUrl('event_question_list'));
             }
         }
         return array('form' => $form->createView(), 'event' => $item);
@@ -85,7 +85,7 @@ class EventController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/remove/{id}", name="event_remove")
+     * @Route("/remove/{id}", name="event_question_remove")
      */
     public function removeAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();

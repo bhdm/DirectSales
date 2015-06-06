@@ -1,11 +1,4 @@
-{% extends "AppBundle::layout.html.twig" %}
-
-{% block breadcrumb %}
-    <ul class="breadcrumb well">
-        <li><a href="{{ path('project_list') }}">Список мероприятий</a></li>
-        <li>Изменение<span class="divider"></span></li>
-    </ul>
-{% endblock %}
+{% extends "AppBundle::layout_mini.html.twig" %}
 
 {% block content %}
     <div class="well">
@@ -15,12 +8,6 @@
             </form>
         </div>
     </div>
-    {% if event.type == 'Обход' %}
-        <div class="well">
-            <iframe src="{{ path('event_question_list',{'eventId' : event.id}) }}" class="frame"></iframe>
-        </div>
-    {% endif %}
-
 {% endblock %}
 
 {% block javascripts %}
@@ -35,8 +22,6 @@
 <style>
     .frame{
         width: 100%;
-        border: 0;
-        min-height: 500px;
     }
 </style>
 {% endblock %}
