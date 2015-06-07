@@ -91,12 +91,21 @@ class Client extends BaseEntity{
      */
     protected $status;
 
+    /**
+     * @ORM\OneToMany(targetEntity="StatusLog", mappedBy="client")
+     */
+    protected $statusLog;
+
 
     public function __toString()
     {
         return $this->lastName . ' '
         . mb_substr($this->firstName, 0, 1, 'utf-8') . '.'
         . ($this->surName ? ' ' . mb_substr($this->surName, 0, 1, 'utf-8') . '.' : '');
+    }
+
+    public function __construct(){
+        $this->statusLog = new ArrayCollection();
     }
 
     /**
@@ -338,6 +347,23 @@ class Client extends BaseEntity{
     {
         $this->answers = $answers;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusLog()
+    {
+        return $this->statusLog;
+    }
+
+    /**
+     * @param mixed $statusLog
+     */
+    public function setStatusLog($statusLog)
+    {
+        $this->statusLog = $statusLog;
+    }
+
 
 
 }

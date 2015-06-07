@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\StatusLog;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -107,6 +108,17 @@ class ClientController extends Controller{
         $item = $em->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($clientId);
         $status = $em->getRepository('AppBundle:ClientStatus')->findOneById($statusId);
         $item->setStatus($status);
+
+        /** Запись в статус лог */
+        $statusLog = new StatusLog();
+        $statusLog->setUser($this->getUser());
+        $statusLog->setClient($item);
+        $statusLog->setStatus($status);
+        $date = new \DateTime();
+        $statusLog->setCreated($date);
+        $em->persist($statusLog);
+
+
         $em->flush();
         return $this->redirect($request->headers->get('referer'));
     }

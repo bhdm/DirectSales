@@ -97,6 +97,10 @@ class User extends BaseEntity implements UserInterface{
      */
     protected $received;
 
+    /**
+     * @ORM\OneToMany(targetEntity="StatusLog", mappedBy="user")
+     */
+    protected $statusLog;
 
     public function __toString()
     {
@@ -110,6 +114,7 @@ class User extends BaseEntity implements UserInterface{
         $this->projects = new ArrayCollection();
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
+        $this->statusLog = new ArrayCollection();
 
         $this->roles = 'ROLE_AGENT';
     }
@@ -411,4 +416,22 @@ class User extends BaseEntity implements UserInterface{
     public function removeReceived($received){
         $this->received->removeElement($received);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusLog()
+    {
+        return $this->statusLog;
+    }
+
+    /**
+     * @param mixed $statusLog
+     */
+    public function setStatusLog($statusLog)
+    {
+        $this->statusLog = $statusLog;
+    }
+
+
 }

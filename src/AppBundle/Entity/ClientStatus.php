@@ -24,6 +24,11 @@ class ClientStatus extends BaseEntity{
      */
     protected $clients;
 
+    /**
+     * @ORM\OneToMany(targetEntity="StatusLog", mappedBy="status")
+     */
+    protected $statusLog;
+
 
     public function __toString(){
         return $this->title;
@@ -31,6 +36,7 @@ class ClientStatus extends BaseEntity{
 
     public function __construct(){
         $this->clients = new ArrayCollection();
+        $this->statusLog = new ArrayCollection();
     }
 
     /**
@@ -65,5 +71,22 @@ class ClientStatus extends BaseEntity{
     {
         $this->clients = $clients;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStatusLog()
+    {
+        return $this->statusLog;
+    }
+
+    /**
+     * @param mixed $statusLog
+     */
+    public function setStatusLog($statusLog)
+    {
+        $this->statusLog = $statusLog;
+    }
+
 
 }
