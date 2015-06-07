@@ -52,6 +52,16 @@ class Client extends BaseEntity{
     /**
      * @ORM\Column(type="string")
      */
+    protected $education;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $loyalty;
+
+    /**
+     * @ORM\Column(type="string")
+     */
     protected $phone;
 
     /**
@@ -362,6 +372,38 @@ class Client extends BaseEntity{
     public function setStatusLog($statusLog)
     {
         $this->statusLog = $statusLog;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEducation()
+    {
+        return $this->education;
+    }
+
+    /**
+     * @param mixed $education
+     */
+    public function setEducation($education)
+    {
+        $this->education = $education;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLoyalty()
+    {
+        return $this->loyalty;
+    }
+
+    /**
+     * @param mixed $loyalty
+     */
+    public function setLoyalty($loyalty)
+    {
+        $this->loyalty = $loyalty;
     }
 
 

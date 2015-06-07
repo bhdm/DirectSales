@@ -27,6 +27,21 @@ class ClientType extends AbstractType
             '4' => 'Отменен',
         );
 
+        $education = array(
+            'Нету' => 'Нету',
+            'Среднее' => 'Среднее',
+            'Среднее специальное' => 'Среднее специальное',
+            'Неоконченное высшее' => 'Неоконченное высшее',
+            'Неполное высшее' => 'Неполное высшее',
+            'Высшее' => 'Высшее',
+        );
+
+        $loyalty = array(
+            'Сторонник' => 'Сторонник',
+            'Противник' => 'Противник',
+            'Неопределился' => 'Неопределился',
+        );
+
         $builder
             ->add('lastName', null, array('label' => 'Фамилия'))
             ->add('firstName', null, array('label' => 'Имя'))
@@ -41,6 +56,10 @@ class ClientType extends AbstractType
             ->add($builder->create('gender',  'choice', array('required' => true,    'label' => 'Пол', 'choices' => $gender, 'attr'=> array('data-placeholder'=>'Выберите пол'))))
             ->add('jobPlace', null, array('label' => 'Место работы'))
             ->add('jobPost', null, array('label' => 'Специальность'))
+            ->add($builder->create('education',  'choice', array('required' => true,    'label' => 'Образование', 'choices' => $education, 'attr'=> array('data-placeholder'=>'Выберите образование'))))
+            ->add($builder->create('loyalty',  'choice', array('required' => true,    'label' => 'Статус лояльности', 'choices' => $loyalty, 'attr'=> array('data-placeholder'=>'Выберите статус'))))
+//            ->add('jobPost', null, array('label' => 'Образование'))
+//            ->add('jobPost', null, array('label' => 'Статус лояльности'))
             ->add('experience', 'integer', array('label' => 'Стаж'))
             ->add('adrs', null, array('label' => 'Адрес проживания'))
             ->add('phone', null, array('label' => 'Телефон'))
