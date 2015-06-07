@@ -4,7 +4,9 @@
     <ul class="breadcrumb well">
         <li>{{ project.title }}</li>
         <li>Мероприятия</li>
-        <li><a href="{{ path('event_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% if is_granted('ROLE_OPERATOR') %}
+            <li><a href="{{ path('event_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% endif %}
     </ul>
 {% endblock %}
 
@@ -20,18 +22,20 @@
                data-sort-name="number"
                data-sort-order="desc">
             <thead>
-                <tr>
-                    <th data-field="number"
-                        data-sortable="true">№</th>
-                    <th data-field="title"
-                        data-sortable="true">Название</th>
-                    <th data-field="title"
-                        data-sortable="true"></th>
-                    <th data-field="type"
-                        data-sortable="true">Тип мероприятия</th>
-                    <th data-field="setting"
-                        data-sortable="false" class="setting">Инструменты</th>
-                </tr>
+            <tr>
+                <th data-field="number"
+                    data-sortable="true">№</th>
+                <th data-field="title"
+                    data-sortable="true">Название</th>
+                <th data-field="title"
+                    data-sortable="true"></th>
+                <th data-field="type"
+                    data-sortable="true">Тип мероприятия</th>
+                {% if is_granted('ROLE_OPERATOR') %}
+                <th data-field="setting"
+                    data-sortable="false" class="setting">Инструменты</th>
+                {% endif %}
+            </tr>
             </thead>
             {% for item in pagination %}
                 <tr>
@@ -48,20 +52,22 @@
                     </td>
                     <td>{{ item.type }}</td>
                     <td class="setting">
-                        {% spaceless %}
-                        <a href="{{ path('event_edit',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-bg">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                            </button>
-                        </a>
-                            &nbsp;
-                            &nbsp;
-                        <a href="{{ path('event_remove',{'id' : item.id}) }}">
-                            <button type="button" class="btn btn-default btn-bg">
-                                <span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                        </a>
-                        {% endspaceless %}
+                        {% if is_granted('ROLE_OPERATOR') %}
+                            {% spaceless %}
+                                <a href="{{ path('event_edit',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-bg">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                                <a href="{{ path('event_remove',{'id' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-bg">
+                                        <span class="glyphicon glyphicon-remove"></span>
+                                    </button>
+                                </a>
+                            {% endspaceless %}
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor%}

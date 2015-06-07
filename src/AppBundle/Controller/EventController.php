@@ -18,7 +18,7 @@ use AppBundle\Form\EventType;
 class EventController extends Controller{
     const ENTITY_NAME = 'Event';
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/{projectId}", name="event_list")
      * @Template()
      */
@@ -37,7 +37,7 @@ class EventController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_OPERATOR')")
      * @Route("/add/{projectId}", name="event_add")
      * @Template()
      */
@@ -62,7 +62,7 @@ class EventController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_OPERATOR')")
      * @Route("/edit/{id}", name="event_edit")
      * @Template()
      */
@@ -84,7 +84,7 @@ class EventController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_OPERATOR')")
      * @Route("/remove/{id}", name="event_remove")
      */
     public function removeAction(Request $request, $id){
@@ -98,7 +98,7 @@ class EventController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_OPERATOR')")
      * @Route("/poll-stats/{eventId}", name="event_poll_stats")
      * @Template()
      */

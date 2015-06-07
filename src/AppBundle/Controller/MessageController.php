@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
- * @Security("has_role('ROLE_OPERATOR')")
+ * @Security("has_role('ROLE_AGENT')")
  * @Route("/panel/message")
  */
 class MessageController extends Controller
@@ -35,8 +35,8 @@ class MessageController extends Controller
             $em->flush();
         }
 
-        if ( !$this->get('security.context')->isGranted('ROLE_ADMIN')){
-            $operatorId = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById(1)->getId();
+        if ( $operatorId == null){
+            $operatorId = $this->getUser()->getParent()->getId();
         }
 
         if ($operatorId){

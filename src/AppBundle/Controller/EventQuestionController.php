@@ -101,7 +101,7 @@ class EventQuestionController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/{eventId}/answer/{clientId}", name="event_answer_add")
      * @Template()
      */
@@ -137,7 +137,7 @@ class EventQuestionController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/{eventId}/client", name="event_client_add")
      * @Template("AppBundle:Client:add.html.twig")
      */

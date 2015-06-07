@@ -22,6 +22,10 @@ class User extends BaseEntity implements UserInterface{
 
     /**
      * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
+     * @ORM\JoinTable(name="user_project",
+     *     joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="project_id", referencedColumnName="id")}
+     * )
      */
     protected $projects;
 
@@ -103,12 +107,12 @@ class User extends BaseEntity implements UserInterface{
     protected $statusLog;
 
     /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="childs")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="childs")
      */
     protected $parent;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="parent")
+     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
      */
     protected $childs;
 

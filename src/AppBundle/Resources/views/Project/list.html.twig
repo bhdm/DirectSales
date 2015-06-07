@@ -3,7 +3,9 @@
 {% block breadcrumb %}
     <ul class="breadcrumb well">
         <li>Список проектов</li>
-        <li><a href="{{ path('project_add') }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% if is_granted('ROLE_ADMIN') %}
+            <li><a href="{{ path('project_add') }}"><span class="btn btn-primary">Добавить</span></a></li>
+        {% endif %}
     </ul>
 {% endblock %}
 

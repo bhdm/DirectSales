@@ -18,17 +18,21 @@ use AppBundle\Form\ProjectType;
 class ProjectController extends Controller{
     const ENTITY_NAME = 'Project';
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/", name="project_list")
      * @Template()
      */
     public function listAction(){
-        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findAll();
+        if ( $this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findAll();
+        }else{
+            $items = $this->getUser()->getProjects();
+        }
 
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
-            $this->get('request')->query->get('project', 1),
+            $this->get('request')->query->get('page', 1),
             20
         );
 

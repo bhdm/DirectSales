@@ -19,13 +19,19 @@ use AppBundle\Form\ClientType;
 class ClientController extends Controller{
     const ENTITY_NAME = 'Client';
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/{projectId}", name="client_list")
      * @Template()
      */
     public function listAction($projectId){
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-        $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
+        if ( $this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
+        }else{
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findBy(array('project'=> $project, 'user'=> $this->getUser()));
+        }
+
+
         $status = $this->getDoctrine()->getRepository('AppBundle:ClientStatus')->findAll();
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
@@ -38,7 +44,7 @@ class ClientController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/add/{projectId}", name="client_add")
      * @Template()
      */
@@ -63,7 +69,7 @@ class ClientController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/edit/{projectId}{id}", name="client_edit")
      * @Template()
      */
@@ -86,7 +92,7 @@ class ClientController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/remove/{id}", name="client_remove")
      */
     public function removeAction(Request $request, $id){

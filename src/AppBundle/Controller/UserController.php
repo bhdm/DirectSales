@@ -26,11 +26,16 @@ class UserController extends Controller{
     public function listAction($projectId = null){
         if ($projectId){
             $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-            $items = $project->getUsers();
+            $items = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array( 'parent' => $this->getUser()));
         }else{
+            $project = null;
             if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-                $project = null;
                 $items = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+            }else{
+                $items = $this->getUser()->getChilds();
+                if ($items == null){
+                    $items = array();
+                }
             }
         }
 
@@ -45,7 +50,7 @@ class UserController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/add/{projectId}", name="user_add", defaults={"projectId" = null })
      * @Template()
      */
@@ -59,8 +64,10 @@ class UserController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
-                $item->getProjects()->add($project);
-                $item->getParent()->add($this->getUser());
+                if ($project){
+                    $item->getProjects()->add($project);
+                }
+                $item->setParent($this->getUser());
                 $item->setSalt(md5(time()));
                 $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
                 $password = $encoder->encodePassword($item->getPassword(), $item->getSalt());
@@ -75,7 +82,7 @@ class UserController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/edit/{id}", name="user_edit")
      * @Template()
      */
@@ -88,6 +95,9 @@ class UserController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
+                $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
+                $password = $encoder->encodePassword($item->getPassword(), $item->getSalt());
+                $item->setPassword($password);
                 $em->flush($item);
                 $em->refresh($item);
                 return $this->redirect($this->generateUrl('user_list'));
@@ -116,7 +126,7 @@ class UserController extends Controller{
      * @Template()
      */
     public function userProjectAction(Request $request, $userId){
-        $user = $this->getUser();
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($userId);
         $projects = $user->getProjects();
 
         if ($request->getMethod() == 'POST'){
