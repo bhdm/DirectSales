@@ -1,8 +1,10 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Client;
 use AppBundle\Entity\EventAnswer;
 use AppBundle\Entity\EventQuestion;
+use AppBundle\Form\ClientType;
 use AppBundle\Form\EventQuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -100,18 +102,17 @@ class EventQuestionController extends Controller{
 
     /**
      * @Security("has_role('ROLE_ADMIN')")
-     * @Route("/{eventId}/answer", name="event_answer_list")
+     * @Route("/{eventId}/answer/{clientId}", name="event_answer_add")
      * @Template()
      */
-    public function answerAction(Request $request, $eventId){
+    public function answerAction(Request $request, $eventId, $clientId){
         $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
         $questions = $event->getQuestions();
         $project = $event->getProject();
-        $clients = $project->getClients();
+        $client = $this->getDoctrine()->getRepository('AppBundle:Client')->findOneById($clientId);
 
         if ($request->getMethod() == 'POST'){
             $em = $this->getDoctrine()->getManager();
-            $client = $this->getDoctrine()->getRepository('AppBundle:Client')->findOneById($request->request->get('client'));
             $date = new \DateTime();
             foreach ( $request->request->get('answer') as $k => $a ){
                 $question = $this->getDoctrine()->getRepository('AppBundle:EventQuestion')->findOneById($k);
@@ -124,14 +125,48 @@ class EventQuestionController extends Controller{
                 $answer->setUpdated($date);
                 $em->persist($answer);
             }
-            $em->flush($answer);
-            return $this->redirect($this->generateUrl('event_list', array('projectId' => $event->getProject()->getId())));
+            $em->flush();
+            return $this->redirect($this->generateUrl('event_list', array('projectId' => $project->getId())));
         }
 
         return array(
             'event' => $event,
             'questions' => $questions,
-            'clients' => $clients,
+            'client' => $client,
         );
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/{eventId}/client", name="event_client_add")
+     * @Template("AppBundle:Client:add.html.twig")
+     */
+    public function clientAddAction(Request $request, $eventId){
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
+
+        $project = $event->getProject();
+        $em = $this->getDoctrine()->getManager();
+        $item = new Client();
+        $form = $this->createForm(new ClientType($em), $item);
+        $formData = $form->handleRequest($request);
+
+        if ($request->getMethod() == 'POST'){
+            if ($formData->isValid()){
+                $item = $formData->getData();
+                $item->setProject($project);
+                $item->setUser($this->getUser());
+                $em->persist($item);
+                $em->flush();
+                $em->refresh($item);
+                $clientId = $item->getId();
+                if (count($event->getQuestions())){
+                    return $this->redirect($this->generateUrl('event_answer_add', array('eventId' => $eventId, 'clientId' => $clientId)));
+                }else{
+                    return $this->redirect($this->generateUrl('event_list', array('projectId' => $project->getId())));
+                }
+
+            }
+        }
+        return array('form' => $form->createView(),'project' => $project);
     }
 }

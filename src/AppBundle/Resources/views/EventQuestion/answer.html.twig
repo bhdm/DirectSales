@@ -11,16 +11,10 @@
     <div class="well">
         <div class="row">
              <form method="POST" role="form" class="form-horizontal" >
-                <div class="form-group">
-                    <label class="col-sm-4 control-label required">Выберите клиента</label>
-                    <div class="col-sm-8">
-                        <select id="appbundle_event_type" name="client" data-placeholder="Выберите клиента" class="form-control">
-                            {% for c in clients %}
-                                <option value="{{ c.id }}">{{ c }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
+
+                 <div class="form-group">
+                     <label class="col-sm-4 control-label">{{ client.lastName }} {{ client.firstName }} {{ client.surName }}</label>
+                 </div>
                 <br />
                 <br />
                 <br />

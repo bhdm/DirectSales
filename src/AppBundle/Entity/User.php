@@ -112,6 +112,11 @@ class User extends BaseEntity implements UserInterface{
      */
     protected $childs;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Client", mappedBy="user")
+     */
+    protected $clients;
+
     public function __toString()
     {
         return $this->lastName . ' '
@@ -126,6 +131,7 @@ class User extends BaseEntity implements UserInterface{
         $this->received = new ArrayCollection();
         $this->statusLog = new ArrayCollection();
         $this->parent = new ArrayCollection();
+        $this->clients = new ArrayCollection();
 
         $this->roles = 'ROLE_AGENT';
     }
@@ -325,9 +331,8 @@ class User extends BaseEntity implements UserInterface{
     }
 
     public function setRole($roles){
-        if (is_array($roles)) {
-            $roles = implode($roles, ';');
-        }
+        $this->roles = $roles;
+
     }
 
     /**
@@ -475,6 +480,23 @@ class User extends BaseEntity implements UserInterface{
     {
         $this->childs = $childs;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    /**
+     * @param mixed $clients
+     */
+    public function setClients($clients)
+    {
+        $this->clients = $clients;
+    }
+
 
 
 }

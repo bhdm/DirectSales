@@ -15,11 +15,9 @@
             </form>
         </div>
     </div>
-    {% if event.type == 'Обход' %}
-        <div class="well">
-            <iframe src="{{ path('event_question_list',{'eventId' : event.id}) }}" class="frame"></iframe>
-        </div>
-    {% endif %}
+    <div class="well">
+        <iframe src="{{ path('event_question_list',{'eventId' : event.id}) }}" class="frame"></iframe>
+    </div>
 
 {% endblock %}
 

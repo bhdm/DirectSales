@@ -30,6 +30,11 @@ class Event extends BaseEntity{
     protected $project;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Client", mappedBy="events")
+     */
+    protected $clients;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $type;
@@ -102,5 +107,22 @@ class Event extends BaseEntity{
     {
         $this->questions = $questions;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getClients()
+    {
+        return $this->clients;
+    }
+
+    /**
+     * @param mixed $clients
+     */
+    public function setClients($clients)
+    {
+        $this->clients = $clients;
+    }
+
 
 }

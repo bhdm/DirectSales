@@ -40,17 +40,17 @@ class Client extends BaseEntity{
     protected $gender;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $jobPlace;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $jobPost;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $education;
 
@@ -60,23 +60,23 @@ class Client extends BaseEntity{
     protected $loyalty;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $phone;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $email;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * Стаж в годах
      */
     protected $experience;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $adrs;
 
@@ -92,6 +92,11 @@ class Client extends BaseEntity{
     protected $project;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Event", inversedBy="clients")
+     */
+    protected $events;
+
+    /**
      * @ORM\OneToMany(targetEntity="EventAnswer", mappedBy="client")
      */
     protected $answers;
@@ -100,6 +105,11 @@ class Client extends BaseEntity{
      * @ORM\ManyToOne(targetEntity="ClientStatus", inversedBy="clients")
      */
     protected $status;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="clients")
+     */
+    protected $user;
 
     /**
      * @ORM\OneToMany(targetEntity="StatusLog", mappedBy="client")
@@ -225,7 +235,7 @@ class Client extends BaseEntity{
     /**
      * @param mixed $experience
      */
-    public function setExperience($experience)
+    public function setExperience($experience = null)
     {
         $this->experience = $experience;
     }
@@ -404,6 +414,38 @@ class Client extends BaseEntity{
     public function setLoyalty($loyalty)
     {
         $this->loyalty = $loyalty;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param mixed $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
     }
 
 

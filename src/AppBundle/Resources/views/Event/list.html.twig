@@ -25,6 +25,8 @@
                         data-sortable="true">№</th>
                     <th data-field="title"
                         data-sortable="true">Название</th>
+                    <th data-field="title"
+                        data-sortable="true"></th>
                     <th data-field="type"
                         data-sortable="true">Тип мероприятия</th>
                     <th data-field="setting"
@@ -35,18 +37,14 @@
                 <tr>
                     <td>{{ item.id }}</td>
                     <td>
-                        {% if item.type == 'Обход' %}
-                            <a href="{{ path('event_answer_list', {'eventId' : item.id}) }}" title="Опрос">
-                                {{ item.title }}
-                            </a>
-                        {% endif %}
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('event_poll_stats',{'eventId' : item.id}) }}">
-                                <button type="button" class="btn btn-default btn-bg">
-                                    <span class="glyphicon glyphicon-stats"></span>
-                                </button>
-                            </a>
-                        {% endif %}
+                        <a href="{{ path('event_client_add', {'eventId' : item.id}) }}" title="Опрос">{{ item.title }}</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('event_poll_stats',{'eventId' : item.id}) }}">
+                            <button type="button" class="btn btn-default btn-bg">
+                                <span class="glyphicon glyphicon-stats"></span>
+                            </button>
+                        </a>
                     </td>
                     <td>{{ item.type }}</td>
                     <td class="setting">

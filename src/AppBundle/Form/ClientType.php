@@ -60,11 +60,11 @@ class ClientType extends AbstractType
             ->add($builder->create('loyalty',  'choice', array('required' => true,    'label' => 'Статус лояльности', 'choices' => $loyalty, 'attr'=> array('data-placeholder'=>'Выберите статус'))))
 //            ->add('jobPost', null, array('label' => 'Образование'))
 //            ->add('jobPost', null, array('label' => 'Статус лояльности'))
-            ->add('experience', 'integer', array('label' => 'Стаж'))
+            ->add('experience', null, array('label' => 'Стаж', 'attr' => array('require' => false)))
             ->add('adrs', null, array('label' => 'Адрес проживания'))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('email', null, array('label' => 'Email'))
-            ->add('status', null, array('label' => 'Статус'))
+            ->add('status', null, array('label' => 'Статус', 'attr' => array('required' => true)))
             ->add('comment', null, array('label' => 'Комментарий'))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
