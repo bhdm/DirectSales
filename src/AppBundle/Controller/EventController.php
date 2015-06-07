@@ -96,4 +96,22 @@ class EventController extends Controller{
         }
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/poll-stats/{eventId}", name="event_poll_stats")
+     * @Template()
+     */
+    public function pollStatsAction($eventId){
+        /**
+         * Вывод списка вопросов, варианты ответов, и кол-во одинаковых ответов
+         */
+        $event = $this->getDoctrine()->getRepository('AppBundle:Event')->findOneById($eventId);
+        $stats = $this->getDoctrine()->getRepository('AppBundle:Event')->pollStats($eventId);
+
+        return array(
+            'event' => $event,
+            'stats' => $stats,
+        );
+    }
 }

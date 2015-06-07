@@ -1,0 +1,30 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb well">
+        <li>{{ event.title }}</li>
+        <li>Результаты опроса</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="well">
+        <div class="row">
+            <table class="table">
+                {% set oldQuestion = '' %}
+                {% for s in stats %}
+                    <tr>
+                        <td>
+                            {% if oldQuestion != s.qTitle %}
+                                {{ s.qTitle }}
+                                {% set oldQuestion = s.qTitle %}
+                            {% endif %}
+                        </td>
+                        <td>{{ s.aTitle }}</td>
+                        <td>{{ s.countAnswer }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

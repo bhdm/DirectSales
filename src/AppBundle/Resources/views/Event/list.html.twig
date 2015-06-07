@@ -40,6 +40,13 @@
                                 {{ item.title }}
                             </a>
                         {% endif %}
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('event_poll_stats',{'eventId' : item.id}) }}">
+                                <button type="button" class="btn btn-default btn-bg">
+                                    <span class="glyphicon glyphicon-stats"></span>
+                                </button>
+                            </a>
+                        {% endif %}
                     </td>
                     <td>{{ item.type }}</td>
                     <td class="setting">

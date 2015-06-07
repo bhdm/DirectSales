@@ -15,7 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="EventRepository")
  */
 class Event extends BaseEntity{
 

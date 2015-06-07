@@ -29,6 +29,15 @@ class EventQuestion extends BaseEntity
     protected $title;
 
     /**
+     * @ORM\OneToMany(targetEntity="EventAnswer", mappedBy="question")
+     */
+    protected $answers;
+
+    public function __construct(){
+        $this->answers = new ArrayCollection();
+    }
+
+    /**
      * @return mixed
      */
     public function getEvent()
@@ -58,6 +67,22 @@ class EventQuestion extends BaseEntity
     public function setTitle($title)
     {
         $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnswers()
+    {
+        return $this->answers;
+    }
+
+    /**
+     * @param mixed $answers
+     */
+    public function setAnswers($answers)
+    {
+        $this->answers = $answers;
     }
 
 

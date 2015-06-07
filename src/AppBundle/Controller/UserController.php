@@ -60,6 +60,7 @@ class UserController extends Controller{
             if ($formData->isValid()){
                 $item = $formData->getData();
                 $item->getProjects()->add($project);
+                $item->getParent()->add($this->getUser());
                 $item->setSalt(md5(time()));
                 $encoder = new MessageDigestPasswordEncoder('sha512', true, 10);
                 $password = $encoder->encodePassword($item->getPassword(), $item->getSalt());

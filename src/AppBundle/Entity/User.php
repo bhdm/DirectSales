@@ -102,6 +102,16 @@ class User extends BaseEntity implements UserInterface{
      */
     protected $statusLog;
 
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="childs")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="parent")
+     */
+    protected $childs;
+
     public function __toString()
     {
         return $this->lastName . ' '
@@ -115,6 +125,7 @@ class User extends BaseEntity implements UserInterface{
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
         $this->statusLog = new ArrayCollection();
+        $this->parent = new ArrayCollection();
 
         $this->roles = 'ROLE_AGENT';
     }
@@ -431,6 +442,38 @@ class User extends BaseEntity implements UserInterface{
     public function setStatusLog($statusLog)
     {
         $this->statusLog = $statusLog;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * @param mixed $parent
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChilds()
+    {
+        return $this->childs;
+    }
+
+    /**
+     * @param mixed $childs
+     */
+    public function setChilds($childs)
+    {
+        $this->childs = $childs;
     }
 
 
