@@ -50,6 +50,15 @@
                     </td>
                     <td class="setting">
                         {% spaceless %}
+                            {% if project == null %}
+                                <a href="{{ path('user_add_project',{'userId' : item.id}) }}">
+                                    <button type="button" class="btn btn-default btn-bg">
+                                        <span class="glyphicon glyphicon-list-alt"></span>
+                                    </button>
+                                </a>
+                                &nbsp;
+                                &nbsp;
+                            {% endif %}
                             <a href="{{ path('panel_message',{'operatorId' : item.id}) }}">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-envelope"></span>

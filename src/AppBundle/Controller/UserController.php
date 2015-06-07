@@ -37,7 +37,7 @@ class UserController extends Controller{
         $paginator  = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $items,
-            $this->get('request')->query->get('user', 1),
+            $this->get('request')->query->get('page', 1),
             20
         );
 
@@ -109,4 +109,53 @@ class UserController extends Controller{
         }
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/project/{userId}", name="user_add_project")
+     * @Template()
+     */
+    public function userProjectAction(Request $request, $userId){
+        $user = $this->getUser();
+        $projects = $user->getProjects();
+
+        if ($request->getMethod() == 'POST'){
+            $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($request->request->get('projectId'));
+            $operator = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($userId);
+            $em = $this->getDoctrine()->getManager();
+            $operator->getProjects()->add($project);
+            $em->flush();
+        }
+
+
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $projects,
+            $this->get('request')->query->get('page', 1),
+            20
+        );
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $projects = $this->getDoctrine()->getRepository('AppBundle:Project')->findAll();
+        }else{
+            $projects = $user->getProjects();
+        }
+        return array('pagination' => $pagination, 'user' => $user, 'projects' => $projects);
+    }
+
+    /**
+     * @Security("has_role('ROLE_ADMIN')")
+     * @Route("/project/remove/{userId}/{projectId}", name="user_project_remove")
+     */
+    public function userProjectRemoveAction(Request $request, $userId, $projectId){
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($userId);
+        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
+
+        $project->getUsers()->removeElement($user);
+        $user->getProjects()->removeElement($project);
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+
 }
