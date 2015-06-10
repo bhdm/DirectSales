@@ -26,7 +26,8 @@ class UserController extends Controller{
     public function listAction($projectId = null){
         if ($projectId){
             $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-            $items = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array( 'parent' => $this->getUser()));
+//            $items = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array( 'parent' => $this->getUser()));
+            $items = $project->getUsers();
         }else{
             $project = null;
             if ($this->get('security.context')->isGranted('ROLE_ADMIN')){

@@ -18,7 +18,7 @@
         {% if project != null %}
             <ul class="nav nav-tabs nav-justified">
                 <li role="presentation"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
-                <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Агенты</a></li>
+                <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Клиенты</a></li>
                 <li role="presentation" class="active"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
             </ul>
             <br />
@@ -51,7 +51,7 @@
                     <td class="setting">
                         {% spaceless %}
                             {% if project == null %}
-                                <a href="{{ path('user_add_project',{'userId' : item.id}) }}">
+                                <a href="{{ path('user_add_project',{'userId' : item.id}) }}" title="Добавление проектов пользователю">
                                     <button type="button" class="btn btn-default btn-bg">
                                         <span class="glyphicon glyphicon-list-alt"></span>
                                     </button>
@@ -59,21 +59,21 @@
                                 &nbsp;
                                 &nbsp;
                             {% endif %}
-                            <a href="{{ path('panel_message',{'operatorId' : item.id}) }}">
+                            <a href="{{ path('panel_message',{'operatorId' : item.id}) }}" title="Написать сообщение">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-envelope"></span>
                                 </button>
                             </a>
                             &nbsp;
                             &nbsp;
-                            <a href="{{ path('user_edit',{'id' : item.id}) }}">
+                            <a href="{{ path('user_edit',{'id' : item.id}) }}" title="Редактировать">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                             </a>
                             &nbsp;
                             &nbsp;
-                            <a href="{{ path('user_remove',{'id' : item.id}) }}">
+                            <a href="{{ path('user_remove',{'id' : item.id}) }}" title="Удалить">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
