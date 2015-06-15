@@ -22,7 +22,15 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label required">{{ q.title }}</label>
                         <div class="col-sm-8">
-                            <input type="text" name="answer[{{ q.id }}]" value="" class="form-control">
+                            {% if q.selects | length  == 0 %}
+                                <input type="text" name="answer[{{ q.id }}]" value="" class="form-control">
+                            {% else %}
+                                <select class="form-control" name="answer[{{ q.id }}]">
+                                {% for qs in q.selects %}
+                                    <option value="{{ qs.title }}">{{ qs.title }}</option>
+                                {% endfor %}
+                                </select>
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

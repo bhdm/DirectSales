@@ -27,8 +27,15 @@
                 <tr>
                     <td>{{ item.id }}</td>
                     <td>{{ item.title }}</td>
-                    <td class="setting4">
+                    <td class="setting">
                         {% spaceless %}
+                            <a href="{{ path('event_question_select',{'questionId' : item.id}) }}" title="Варианты ответов">
+                                <button type="button" class="btn btn-default btn-bg">
+                                    <span class="glyphicon glyphicon-th-list"></span>
+                                </button>
+                            </a>
+                            &nbsp;
+                            &nbsp;
                         <a href="{{ path('event_question_edit',{'id' : item.id}) }}">
                             <button type="button" class="btn btn-default btn-bg">
                                 <span class="glyphicon glyphicon-pencil"></span>

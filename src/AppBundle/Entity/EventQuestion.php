@@ -33,8 +33,15 @@ class EventQuestion extends BaseEntity
      */
     protected $answers;
 
+    /**
+     * @ORM\OneToMany(targetEntity="EventSelect", mappedBy="question")
+     */
+    protected $selects;
+
+
     public function __construct(){
         $this->answers = new ArrayCollection();
+        $this->selects = new ArrayCollection();
     }
 
     /**
@@ -83,6 +90,22 @@ class EventQuestion extends BaseEntity
     public function setAnswers($answers)
     {
         $this->answers = $answers;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSelects()
+    {
+        return $this->selects;
+    }
+
+    /**
+     * @param mixed $selects
+     */
+    public function setSelects($selects)
+    {
+        $this->selects = $selects;
     }
 
 
