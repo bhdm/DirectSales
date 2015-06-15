@@ -4,6 +4,8 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    form.type.user:
+        class: AppBundle\Form\UserType
+        arguments: ["@security.context"]
+        tags:
+            - { name: form.type, alias: user_type }
