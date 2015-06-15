@@ -27,7 +27,7 @@ class UserController extends Controller{
         if ($projectId){
             $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
 //            $items = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array( 'parent' => $this->getUser()));
-            $items = $project->getUsers();
+            $items = $this->getDoctrine()->getRepository('AppBundle:User')->getUsers($projectId,$this->getUser()->getId());
         }else{
             $project = null;
             if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
@@ -59,7 +59,7 @@ class UserController extends Controller{
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
         $em = $this->getDoctrine()->getManager();
         $item = new User();
-        $form = $this->createForm(new UserType($em), $item);
+        $form = $this->createForm($this->get('form.type.user'), $item);
         $formData = $form->handleRequest($request);
 
         if ($request->getMethod() == 'POST'){
@@ -122,7 +122,7 @@ class UserController extends Controller{
     }
 
     /**
-     * @Security("has_role('ROLE_ADMIN')")
+     * @Security("has_role('ROLE_AGENT')")
      * @Route("/project/{userId}", name="user_add_project")
      * @Template()
      */
@@ -148,7 +148,7 @@ class UserController extends Controller{
         if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
             $projects = $this->getDoctrine()->getRepository('AppBundle:Project')->findAll();
         }else{
-            $projects = $user->getProjects();
+            $projects = $this->getUser()->getProjects();
         }
         return array('pagination' => $pagination, 'user' => $user, 'projects' => $projects);
     }

@@ -5,27 +5,39 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Security\Core\SecurityContext;
 
 class UserType extends AbstractType
 {
+    private $securityContext;
+
+    public function __construct(SecurityContext $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
+
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $user = $this->securityContext->getToken()->getUser();
 
-        $role = array(
-            'ROLE_ADMIN' => 'Администратор',
-            'ROLE_OPERATOR' => 'Оператор',
-            'ROLE_AGENT' => 'Агент',
-        );
+        if ($user->getRole() == 'ROLE_ADMIN'){
+            $role = array(
+                'ROLE_ADMIN' => 'Администратор',
+                'ROLE_OPERATOR' => 'Оператор',
+                'ROLE_AGENT' => 'Агент',
+            );
+        }else{
+            $role = array(
+                'ROLE_AGENT' => 'Агент',
+            );
+        }
 
-        $status = array(
-            'ROLE_ADMIN' => 'Администратор',
-            'ROLE_OPERATOR' => 'Оператор',
-            'ROLE_AGENT' => 'Агент',
-        );
+
 
         $builder
             ->add('username', null, array('label' => 'Email'))

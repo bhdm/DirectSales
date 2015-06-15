@@ -10,7 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Client
  *
  * @ORM\Table()
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="ClientRepository")
  */
 class Client extends BaseEntity{
 
