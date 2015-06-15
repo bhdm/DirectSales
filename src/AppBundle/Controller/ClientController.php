@@ -28,7 +28,7 @@ class ClientController extends Controller{
         if ( $this->get('security.context')->isGranted('ROLE_ADMIN')){
             $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findByProject($project);
         }else{
-            $items = $this->getDoctrine()->getRepository('AppBundle:'.self::ENTITY_NAME)->findBy(array('project'=> $project, 'user'=> $this->getUser()));
+            $items = $this->getDoctrine()->getRepository('AppBundle:Client')->getClients($project, $this->getUser());
         }
 
 

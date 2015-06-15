@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\EventAnswer;
 use AppBundle\Entity\EventQuestion;
+use AppBundle\Entity\EventSelect;
 use AppBundle\Form\ClientType;
 use AppBundle\Form\EventQuestionType;
+use AppBundle\Form\EventSelectType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -168,5 +170,50 @@ class EventQuestionController extends Controller{
             }
         }
         return array('form' => $form->createView(),'project' => $project);
+    }
+
+    /**
+     * @Security("has_role('ROLE_OPERATOR')")
+     * @Route("/selects/{questionId}", name="event_question_select")
+     * @Template("")
+     */
+    public function questionSelectAction(Request $request, $questionId){
+        $question = $this->getDoctrine()->getRepository('AppBundle:EventQuestion')->findOneById($questionId);
+
+        $em = $this->getDoctrine()->getManager();
+        $item = new EventSelect();
+        $form = $this->createForm(new EventSelectType($em), $item);
+        $formData = $form->handleRequest($request);
+
+        if ($request->getMethod() == 'POST'){
+            if ($formData->isValid()){
+                $item = $formData->getData();
+                $item->setQuestion($question);
+                $em->persist($item);
+                $em->flush();
+                $em->refresh($item);
+            }
+        }
+        $selects = $this->getDoctrine()->getRepository('AppBundle:EventSelect')->findBy(['question' => $question]);
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $selects,
+            $this->get('request')->query->get('event', 1),
+            20
+        );
+        return array('form' => $form->createView(),'pagination' => $pagination, 'question' => $question);
+    }
+
+    /**
+     * @Security("has_role('ROLE_OPERATOR')")
+     * @Route("/selects/remove/{selectId}", name="event_question_select_remove")
+     * @Template("")
+     */
+    public function questionSelectRemoveAction(Request $request, $selectId){
+        $em = $this->getDoctrine()->getManager();
+        $select = $this->getDoctrine()->getRepository('AppBundle:EventSelect')->findOneById($selectId);
+        $em->remove($select);
+        $em->flush();
+        return $this->redirect($request->headers->get('referer'));
     }
 }
