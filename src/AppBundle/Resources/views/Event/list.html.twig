@@ -28,6 +28,8 @@
                 <th data-field="title"
                     data-sortable="true">Название</th>
                 <th data-field="title"
+                    data-sortable="true">Окончание</th>
+                <th data-field="title"
                     data-sortable="true"></th>
                 <th data-field="type"
                     data-sortable="true">Тип мероприятия</th>
@@ -38,10 +40,13 @@
             </tr>
             </thead>
             {% for item in pagination %}
-                <tr>
+                <tr {{ item.end | date >= 'now' | date ? 'style="background: #FFAAAA"' : '' }} >
                     <td>{{ item.id }}</td>
                     <td>
                         <a href="{{ path('event_client_add', {'eventId' : item.id}) }}" title="Опрос">{{ item.title }}</a>
+                    </td>
+                    <td>
+                        {{ item.end | date ("d.m.Y") }}
                     </td>
                     <td>
                         <a href="{{ path('event_poll_stats',{'eventId' : item.id}) }}">

@@ -45,6 +45,11 @@ class Event extends BaseEntity{
     protected $title;
 
     /**
+     * @ORM\Column(type="date")
+     */
+    protected $end;
+
+    /**
      * @return mixed
      */
     public function getProject()
@@ -123,6 +128,23 @@ class Event extends BaseEntity{
     {
         $this->clients = $clients;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param mixed $end
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+    }
+
 
 
 }

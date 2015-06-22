@@ -21,10 +21,12 @@ class EventType extends AbstractType
             'Экзит-пул' => 'Экзит-пул',
             'Обзвон'    => 'Обзвон',
             'Беседа'    => 'Беседа',
+            'СПГ'       => 'СПГ',
         );
 
         $builder
             ->add('title', null, array('label'=> 'Название события'))
+            ->add('end', null, array('label'=> 'Дата окончания'))
             ->add($builder->create('type',  'choice', array('required' => true,    'label' => 'Тип события', 'choices' => $type, 'attr'=> array('data-placeholder'=>'Выберите тип'))))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;

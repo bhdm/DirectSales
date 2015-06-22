@@ -77,7 +77,7 @@ class EventController extends Controller{
                 $item = $formData->getData();
                 $em->flush($item);
                 $em->refresh($item);
-                return $this->redirect($this->generateUrl('event_list'));
+                return $this->redirect($this->generateUrl('event_list', array('projectId' => $item->getProject()->getId())));
             }
         }
         return array('form' => $form->createView(), 'event' => $item);
