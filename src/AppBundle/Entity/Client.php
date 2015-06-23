@@ -116,6 +116,11 @@ class Client extends BaseEntity{
      */
     protected $statusLog;
 
+    /**
+     * @ORM\Column(type="boolean", nullable = true)
+     */
+    protected $isAdr = false;
+
 
     public function __toString()
     {
@@ -421,7 +426,6 @@ class Client extends BaseEntity{
      */
     public function getEvents()
     {
-        return $this->events;
     }
 
     /**
@@ -448,6 +452,25 @@ class Client extends BaseEntity{
         $this->user = $user;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getIsAdr()
+    {
+        return $this->isAdr;
+    }
+
+    /**
+     * @param mixed $isAdr
+     */
+    public function setIsAdr($isAdr = false)
+    {
+        $this->isAdr = $isAdr;
+    }
+
+    public function isAdr(){
+        return $this->isAdr;
+    }
 
 
 }

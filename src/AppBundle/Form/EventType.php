@@ -28,6 +28,7 @@ class EventType extends AbstractType
             ->add('title', null, array('label'=> 'Название события'))
             ->add('end', null, array('label'=> 'Дата окончания'))
             ->add($builder->create('type',  'choice', array('required' => true,    'label' => 'Тип события', 'choices' => $type, 'attr'=> array('data-placeholder'=>'Выберите тип'))))
+//            ->add('previous', null, array('label'=> 'Предыдущее (если POST)'))
             ->add('submit', 'submit', array('label' => 'Сохранить', 'attr' => array('class' => 'btn-primary pull-right')))
         ;
     }

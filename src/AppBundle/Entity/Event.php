@@ -50,6 +50,11 @@ class Event extends BaseEntity{
     protected $end;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Event")
+     */
+    protected $previous;
+
+    /**
      * @return mixed
      */
     public function getProject()
