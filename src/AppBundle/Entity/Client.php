@@ -15,27 +15,27 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Client extends BaseEntity{
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $lastName;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $firstName;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $surName;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     protected $birthDate;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     protected $gender;
 
@@ -55,7 +55,7 @@ class Client extends BaseEntity{
     protected $education;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $loyalty;
 
@@ -76,10 +76,14 @@ class Client extends BaseEntity{
     protected $experience;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\ManyToOne(targetEntity="Address", inversedBy="clients")
      */
     protected $adrs;
 
+    /**
+     * @ORM\Column(type="string", nullable = true)
+     */
+    protected $room;
 
     /**
      * @ORM\Column(type="text", nullable = true)
@@ -446,6 +450,22 @@ class Client extends BaseEntity{
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoom()
+    {
+        return $this->room;
+    }
+
+    /**
+     * @param mixed $room
+     */
+    public function setRoom($room)
+    {
+        $this->room = $room;
     }
 
 
