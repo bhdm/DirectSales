@@ -13,17 +13,37 @@ use AppBundle\Form\ProjectType;
 /**
  * Class StatsController
  * @package AppBundle\Controller
- * @Route("/project")
+ * @Route("/stats")
  */
 class StatsController extends Controller
 {
+
     /**
      * @Security("has_role('ROLE_AGENT')")
-     * @Route("/", name="stats_list")
+     * @Route("/", name="stats_projects_list")
      * @Template()
      */
-    public function listAction()
+    public function projectsAction()
     {
-        return array();
+        if ( $this->get('security.context')->isGranted('ROLE_ADMIN')){
+            $projects = $this->getDoctrine()->getRepository('AppBundle:Project')->findAll();
+        }else{
+            $projects = $this->getUser()->getProjects();
+        }
+
+        return array('projects' => $projects);
     }
+
+    /**
+     * @Security("has_role('ROLE_AGENT')")
+     * @Route("/project/{projectId}", name="stats_project")
+     * @Template()
+     */
+    public function eventsAction($projectId)
+    {
+        $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
+
+        return array('project' => $project);
+    }
+
 }

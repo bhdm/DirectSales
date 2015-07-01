@@ -1,0 +1,33 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb well">
+        <li>Статистика</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+<div class="well">
+    <ul class="nav nav-tabs nav-justified">
+        <li role="presentation" class="active"><a href="{{ path('stats_projects_list') }}">Проекты</a></li>
+        <li role="presentation"><a href="{{ path('stats_projects_list') }}">Агенты</a></li>
+    </ul>
+    <br />
+    <table class="table">
+        <tr>
+            <th>Название проекта</th>
+            <th class="text-center">Кол-во мероприятий</th>
+            <th class="text-center">Кол-во агентов</th>
+            <th class="text-center">Кол-во клиентов</th>
+        </tr>
+        {% for p in projects %}
+            <tr>
+                <td><a href="{{ path('stats_project',{'projectId' : p.id }) }}">{{ p.title }}</a></td>
+                <td class="text-center">{{ p.events | length }}</td>
+                <td class="text-center">{{ p.users | length }}</td>
+                <td class="text-center">{{ p.clients | length }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
