@@ -114,7 +114,6 @@ class ClientController extends Controller{
         $item = $em->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($clientId);
         $status = $em->getRepository('AppBundle:ClientStatus')->findOneById($statusId);
         $item->setStatus($status);
-
         /** Запись в статус лог */
         $statusLog = new StatusLog();
         $statusLog->setUser($this->getUser());
@@ -126,6 +125,7 @@ class ClientController extends Controller{
 
 
         $em->flush();
+
         return $this->redirect($request->headers->get('referer'));
     }
 }
