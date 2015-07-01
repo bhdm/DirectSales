@@ -1,0 +1,50 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb well">
+        <li>Статистика</li>
+        <li>Операторы</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="well">
+        <ul class="nav nav-tabs nav-justified">
+            <li role="presentation"><a href="{{ path('stats_projects_list') }}">Проекты</a></li>
+            <li role="presentation" class="active"><a href="{{ path('stats_agents_list') }}">Агенты</a></li>
+        </ul>
+        <br />
+        <table class="table" data-toggle="table"
+               data-sort-name="number"
+               data-sort-order="desc">
+            <thead>
+            <tr>
+                <th data-field="number"
+                    data-sortable="true">№</th>
+                <th data-field="title"
+                    data-sortable="true">ФИО</th>
+                <th data-field="type"
+                    data-sortable="true">Роль</th>
+                <th data-field="type"
+                    data-sortable="true">Кол-во клиентов</th>
+            </tr>
+            </thead>
+            {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</td>
+                    <td>
+                        {{ item.role | role }}
+                        {% if item.status != 0 %}
+                            {{ item.status }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ item.clients | length }}
+                    </td>
+                </tr>
+                {% include 'AppBundle:Stats:recurse.html.twig' with { 'items': item.__children, 'lvl' : 1, 'setting' : false } %}
+            {% endfor%}
+        </table>
+    </div>
+{% endblock %}

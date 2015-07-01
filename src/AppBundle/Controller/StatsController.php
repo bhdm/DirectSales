@@ -30,7 +30,6 @@ class StatsController extends Controller
         }else{
             $projects = $this->getUser()->getProjects();
         }
-
         return array('projects' => $projects);
     }
 
@@ -42,8 +41,21 @@ class StatsController extends Controller
     public function eventsAction($projectId)
     {
         $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
-
         return array('project' => $project);
     }
+
+    /**
+     * @Security("has_role('ROLE_AGENT')")
+     * @Route("/agents", name="stats_agents_list")
+     * @Template()
+     */
+    public function agentsAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:User');
+        $items = $this->getDoctrine()->getRepository('AppBundle:User')->findById($this->getUser()->getId());
+        return array('items' => $items);
+    }
+
 
 }

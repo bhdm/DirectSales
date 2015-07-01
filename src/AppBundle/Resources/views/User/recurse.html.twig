@@ -1,0 +1,52 @@
+{% for item in items %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td><span class="lvl-{{ lvl }}">{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</span></td>
+        <td>
+            {% if item.roles is iterable %}
+                {{ item.role | role }}
+            {% else %}
+                {{ item.roles | role }}
+            {% endif %}
+
+            {% if item.status != 0 %}
+                {{ item.status }}
+            {% endif %}
+        </td>
+        {% if setting == true %}
+            <td class="setting">
+                {% spaceless %}
+                    {% if project == null %}
+                        <a href="{{ path('user_add_project',{'userId' : item.id}) }}" title="Добавление проектов пользователю">
+                            <button type="button" class="btn btn-default btn-bg">
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </button>
+                        </a>
+                        &nbsp;
+                        &nbsp;
+                    {% endif %}
+                    <a href="{{ path('panel_message',{'operatorId' : item.id}) }}" title="Написать сообщение">
+                        <button type="button" class="btn btn-default btn-bg">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                        </button>
+                    </a>
+                    &nbsp;
+                    &nbsp;
+                    <a href="{{ path('user_edit',{'id' : item.id}) }}" title="Редактировать">
+                        <button type="button" class="btn btn-default btn-bg">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                    </a>
+                    &nbsp;
+                    &nbsp;
+                    <a href="{{ path('user_remove',{'id' : item.id}) }}" title="Удалить">
+                        <button type="button" class="btn btn-default btn-bg">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </a>
+                {% endspaceless %}
+            </td>
+        {% endif %}
+    </tr>
+    {% include 'AppBundle:User:recurse.html.twig' with { 'items': item.__children, 'lvl' : lvl +1, 'setting' : setting } %}
+{% endfor%}

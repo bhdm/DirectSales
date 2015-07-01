@@ -13,12 +13,54 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
+ * @Gedmo\Tree(type="nested")
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="UserRepository")
  */
 class User extends BaseEntity implements UserInterface{
+
+    # Данные свойства необходимы для построения дерева
+    /**
+     * @Gedmo\TreeLeft
+     * @ORM\Column(name="lft", type="integer")
+     */
+    protected $lft;
+
+    /**
+     * @Gedmo\TreeLevel
+     * @ORM\Column(name="lvl", type="integer")
+     */
+    protected $lvl;
+
+    /**
+     * @Gedmo\TreeRight
+     * @ORM\Column(name="rgt", type="integer")
+     */
+    protected $rgt;
+
+    /**
+     * @Gedmo\TreeRoot
+     * @ORM\Column(name="root", type="integer", nullable=true)
+     */
+    protected $root;
+
+    /**
+     * @Gedmo\TreeParent
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="children")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
+     * @ORM\OrderBy({"lft" = "ASC"})
+     */
+    protected $children;
+
+    # Теперь все остальные свойства
 
     /**
      * @ORM\ManyToMany(targetEntity="Project", inversedBy="users")
@@ -106,15 +148,15 @@ class User extends BaseEntity implements UserInterface{
      */
     protected $statusLog;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="childs")
-     */
-    protected $parent;
-
-    /**
-     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
-     */
-    protected $childs;
+//    /**
+//     * @ORM\ManyToOne(targetEntity="User", inversedBy="childs")
+//     */
+//    protected $parent;
+//
+//    /**
+//     * @ORM\OneToMany(targetEntity="User", mappedBy="parent")
+//     */
+//    protected $childs;
 
     /**
      * @ORM\OneToMany(targetEntity="Client", mappedBy="user")
@@ -127,7 +169,6 @@ class User extends BaseEntity implements UserInterface{
         . mb_substr($this->firstName, 0, 1, 'utf-8') . '.'
         . ($this->surName ? ' ' . mb_substr($this->surName, 0, 1, 'utf-8') . '.' : '');
     }
-
 
     public function __construct(){
         $this->projects = new ArrayCollection();
@@ -474,7 +515,7 @@ class User extends BaseEntity implements UserInterface{
      */
     public function getChilds()
     {
-        return $this->childs;
+        return $this->children;
     }
 
     /**
@@ -482,7 +523,7 @@ class User extends BaseEntity implements UserInterface{
      */
     public function setChilds($childs)
     {
-        $this->childs = $childs;
+        $this->children = $childs;
     }
 
     /**
@@ -501,6 +542,88 @@ class User extends BaseEntity implements UserInterface{
         $this->clients = $clients;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getLft()
+    {
+        return $this->lft;
+    }
 
+    /**
+     * @param mixed $lft
+     */
+    public function setLft($lft)
+    {
+        $this->lft = $lft;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLvl()
+    {
+        return $this->lvl;
+    }
+
+    /**
+     * @param mixed $lvl
+     */
+    public function setLvl($lvl)
+    {
+        $this->lvl = $lvl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRgt()
+    {
+        return $this->rgt;
+    }
+
+    /**
+     * @param mixed $rgt
+     */
+    public function setRgt($rgt)
+    {
+        $this->rgt = $rgt;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * @param mixed $root
+     */
+    public function setRoot($root)
+    {
+        $this->root = $root;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * @param mixed $children
+     */
+    public function setChildren($children)
+    {
+        $this->children = $children;
+    }
+
+    public function __children(){
+        return $this->getChildren();
+    }
 
 }

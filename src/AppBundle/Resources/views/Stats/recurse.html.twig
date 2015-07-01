@@ -1,0 +1,21 @@
+{% for item in items %}
+    <tr>
+        <td>{{ item.id }}</td>
+        <td><span class="lvl-{{ lvl }}">{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</span></td>
+        <td>
+            {% if item.roles is iterable %}
+                {{ item.role | role }}
+            {% else %}
+                {{ item.roles | role }}
+            {% endif %}
+
+            {% if item.status != 0 %}
+                {{ item.status }}
+            {% endif %}
+        </td>
+        <td>
+            {{ item.clients | length }}
+        </td>
+    </tr>
+    {% include 'AppBundle:User:recurse.html.twig' with { 'items': item.__children, 'lvl' : lvl +1, 'setting' : setting } %}
+{% endfor%}

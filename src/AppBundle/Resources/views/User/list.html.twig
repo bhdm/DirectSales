@@ -39,12 +39,12 @@
                     data-sortable="false" class="setting">Инструменты</th>
             </tr>
             </thead>
-            {% for item in pagination %}
+            {% for item in items %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item }}</td>
+                    <td>{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</td>
                     <td>
-                        {{ item.rolesString }}
+                        {{ item.roles | role }}
                         {% if item.status != 0 %}
                             {{ item.status }}
                         {% endif %}
@@ -82,10 +82,8 @@
                         {% endspaceless %}
                     </td>
                 </tr>
+                {% include 'AppBundle:User:recurse.html.twig' with { 'items': item.__children, 'lvl' : 1, 'setting' : true } %}
             {% endfor%}
         </table>
-        <div class="navigation">
-            {{ knp_pagination_render(pagination) }}
-        </div>
     </div>
 {% endblock %}

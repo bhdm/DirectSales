@@ -2,11 +2,13 @@
 
 namespace AppBundle\Entity;
 
+
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Doctrine\ORM\Query\ResultSetMapping;
+use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 
-class UserRepository extends EntityRepository
+class UserRepository extends NestedTreeRepository
 {
 
     public function getUsers($projectId, $userId)

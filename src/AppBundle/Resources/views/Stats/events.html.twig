@@ -3,6 +3,7 @@
 {% block breadcrumb %}
     <ul class="breadcrumb well">
         <li>Статистика</li>
+        <li>Проекты</li>
         <li>{{ project.title }}</li>
     </ul>
 {% endblock %}
@@ -11,7 +12,7 @@
 <div class="well">
     <ul class="nav nav-tabs nav-justified">
         <li role="presentation" class="active"><a href="{{ path('stats_projects_list') }}">Проекты</a></li>
-        <li role="presentation"><a href="{{ path('stats_projects_list') }}">Агенты</a></li>
+        <li role="presentation"><a href="{{ path('stats_agents_list') }}">Агенты</a></li>
     </ul>
     <br />
     <table class="table">

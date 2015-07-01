@@ -24,30 +24,40 @@ class UserController extends Controller{
      * @Template()
      */
     public function listAction($projectId = null){
+        $em = $this->getDoctrine()->getManager();
+        $repo = $em->getRepository('AppBundle:User');
+
         if ($projectId){
             $project = $this->getDoctrine()->getRepository('AppBundle:Project')->findOneById($projectId);
 //            $items = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array( 'parent' => $this->getUser()));
             $items = $this->getDoctrine()->getRepository('AppBundle:User')->getUsers($projectId,$this->getUser()->getId());
         }else{
             $project = null;
-            if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
-                $items = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
-            }else{
-                $items = $this->getUser()->getChilds();
-                if ($items == null){
-                    $items = array();
-                }
-            }
+//            if ($this->get('security.context')->isGranted('ROLE_ADMIN')){
+//                $items = $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
+//            }else{
+//                $items = $this->getUser()->getChilds();
+//                if ($items == null){
+//                    $items = array();
+//                }
+//            }
+            $items = $repo->childrenHierarchy(
+                null,
+                false, /* true: load all children, false: only direct */
+                array(
+                    'html' => false,
+                )
+            );
         }
 
-        $paginator  = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $items,
-            $this->get('request')->query->get('page', 1),
-            20
-        );
+//        $paginator  = $this->get('knp_paginator');
+//        $pagination = $paginator->paginate(
+//            $items,
+//            $this->get('request')->query->get('page', 1),
+//            20
+//        );
 
-        return array('pagination' => $pagination, 'project' => $project);
+        return array('items' => $items, 'project' => $project);
     }
 
     /**
