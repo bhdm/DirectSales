@@ -44,9 +44,15 @@ class Project extends BaseEntity{
      */
     protected $users;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Address", mappedBy="project")
+     */
+    protected $adrs;
+
     public function __construct(){
         $this->events = new ArrayCollection();
         $this->clients = new ArrayCollection();
+        $this->adrs = new ArrayCollection();
     }
 
     /**
@@ -135,6 +141,23 @@ class Project extends BaseEntity{
     {
         $this->users = $users;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getAdrs()
+    {
+        return $this->adrs;
+    }
+
+    /**
+     * @param mixed $adrs
+     */
+    public function setAdrs($adrs)
+    {
+        $this->adrs = $adrs;
+    }
+
 
 
 }

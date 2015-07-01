@@ -2,14 +2,9 @@
 
 {% block breadcrumb %}
     <ul class="breadcrumb well">
-        {% if project %}
         <li>{{ project.title }}</li>
         <li>Операторы</li>
-        <li><a href="{{ path('user_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
-        {% else %}
-            <li>Операторы</li>
-            <li><a href="{{ path('user_add') }}"><span class="btn btn-primary">Добавить</span></a></li>
-        {% endif %}
+        <li><a href="{{ path('adrs_add',{'projectId' : project.id}) }}"><span class="btn btn-primary">Добавить</span></a></li>
     </ul>
 {% endblock %}
 
@@ -19,8 +14,8 @@
             <ul class="nav nav-tabs nav-justified">
                 <li role="presentation"><a href="{{ path('event_list',{ 'projectId' : project.id}) }}">Мероприятия</a></li>
                 <li role="presentation"><a href="{{ path('client_list',{ 'projectId' : project.id}) }}">Клиенты</a></li>
-                <li role="presentation" class="active"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
-                <li role="presentation"><a href="{{ path('adrs_list',{ 'projectId' : project.id}) }}">Адреса</a></li>
+                <li role="presentation"><a href="{{ path('user_list',{ 'projectId' : project.id}) }}">Операторы</a></li>
+                <li role="presentation" class="active"><a href="{{ path('adrs_list',{ 'projectId' : project.id}) }}">Адреса</a></li>
             </ul>
             <br />
         {% endif %}
@@ -32,9 +27,9 @@
                 <th data-field="number"
                     data-sortable="true">№</th>
                 <th data-field="title"
-                    data-sortable="true">ФИО</th>
+                    data-sortable="true">Адрес</th>
                 <th data-field="type"
-                    data-sortable="true">Роль</th>
+                    data-sortable="true">Кол-во клиентов</th>
                 <th data-field="setting"
                     data-sortable="false" class="setting">Инструменты</th>
             </tr>
@@ -44,37 +39,18 @@
                     <td>{{ item.id }}</td>
                     <td>{{ item }}</td>
                     <td>
-                        {{ item.rolesString }}
-                        {% if item.status != 0 %}
-                            {{ item.status }}
-                        {% endif %}
+                        {{ item.clients | length }}
                     </td>
                     <td class="setting">
                         {% spaceless %}
-                            {% if project == null %}
-                                <a href="{{ path('user_add_project',{'userId' : item.id}) }}" title="Добавление проектов пользователю">
-                                    <button type="button" class="btn btn-default btn-bg">
-                                        <span class="glyphicon glyphicon-list-alt"></span>
-                                    </button>
-                                </a>
-                                &nbsp;
-                                &nbsp;
-                            {% endif %}
-                            <a href="{{ path('panel_message',{'operatorId' : item.id}) }}" title="Написать сообщение">
-                                <button type="button" class="btn btn-default btn-bg">
-                                    <span class="glyphicon glyphicon-envelope"></span>
-                                </button>
-                            </a>
-                            &nbsp;
-                            &nbsp;
-                            <a href="{{ path('user_edit',{'id' : item.id}) }}" title="Редактировать">
+                            <a href="{{ path('adrs_edit',{'id' : item.id}) }}" title="Редактировать">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                             </a>
                             &nbsp;
                             &nbsp;
-                            <a href="{{ path('user_remove',{'id' : item.id}) }}" title="Удалить">
+                            <a href="{{ path('adrs_remove',{'id' : item.id}) }}" title="Удалить">
                                 <button type="button" class="btn btn-default btn-bg">
                                     <span class="glyphicon glyphicon-remove"></span>
                                 </button>
