@@ -2,7 +2,7 @@
 
 {% block breadcrumb %}
     <ul class="breadcrumb well">
-        <li><a href="{{ path('adrs_list') }}">Список адресов</a></li>
+        <li><a href="{{ path('adrs_list',{'projectId' : project.Id }) }}">Список адресов</a></li>
         <li>Изменение<span class="divider"></span></li>
     </ul>
 {% endblock %}
@@ -21,6 +21,17 @@
     {{ parent() }}
     {#<script src="{{ asset('bundles/admin/ckeditor/ckeditor.js') }}"></script>#}
     {#<script src="{{ asset('bundles/admin/ckeditor/styles.js') }}"></script>#}
+    <script>
+        $(document).ready(function(){
+            $(function () {
+                $('#appbundle_address_title').kladr({
+                    token: '51dfe5d42fb2b43e3300006e',
+                    key: '86a2c2a06f1b2451a87d05512cc2c3edfdf41969',
+                    oneString: true
+                });
+            });
+        });
+    </script>
 {% endblock %}
 
 {% block stylesheets %}

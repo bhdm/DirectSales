@@ -62,6 +62,7 @@ class ClientType extends AbstractType
 //            ->add('jobPost', null, array('label' => 'Статус лояльности'))
             ->add('experience', null, array('label' => 'Стаж', 'attr' => array('require' => false)))
             ->add('adrs', null, array('label' => 'Адрес проживания'))
+            ->add('adrs2', 'text', array('label' => 'Другой адрес', 'mapped' => false))
             ->add('phone', null, array('label' => 'Телефон'))
             ->add('email', null, array('label' => 'Email'))
             ->add('status', null, array('label' => 'Статус', 'attr' => array('required' => true)))

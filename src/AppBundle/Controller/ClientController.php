@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Address;
 use AppBundle\Entity\StatusLog;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -58,6 +59,15 @@ class ClientController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
+                if (isset($request->request->get('parameters')['appbundle_client']['adrs2'])){
+                    $adrs = new Address();
+                    $adrs->setProject($project);
+                    $adrs->setCreated(new \DateTime());
+                    $adrs->setTitle($request->request->get('parameters')['appbundle_client']['adrs2']));
+                    $em->persist($adrs);
+                    $em->flush();
+                    $em->refresh($adrs);
+                }
                 $item->setProject($project);
                 $em->persist($item);
                 $em->flush();
