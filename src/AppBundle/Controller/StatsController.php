@@ -62,9 +62,9 @@ class StatsController extends Controller
      * @Route("/adrs/{userId}", name="stats_adrs_list")
      * @Template()
      */
-    public function adrsActions($userId){
+    public function adrsAction($userId){
         $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($userId);
-        $adrs = $this->getDoctrine()->getRepository('AppBundle:User')->getUserAddress($userId);
+        $adrs = $this->getDoctrine()->getRepository('AppBundle:Address')->getUserAddress($userId);
         return array('user' => $user, 'adrs' => $adrs );
     }
 

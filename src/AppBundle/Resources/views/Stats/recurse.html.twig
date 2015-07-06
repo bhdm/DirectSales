@@ -1,7 +1,7 @@
 {% for item in items %}
     <tr>
         <td>{{ item.id }}</td>
-        <td><span class="lvl-{{ lvl }}"><a href="{{ (path('stats_adrs_list',{'userId' : item.id})) }}"></a>{{ item.lastName }} {{ item.firstName }} {{ item.surName }}</span></td>
+        <td><span class="lvl-{{ lvl }}"><a href="{{ (path('stats_adrs_list',{'userId' : item.id})) }}">{{ item.lastName }} {{ item.firstName }} {{ item.surName }}</a></span></td>
         <td>
             {% if item.roles is iterable %}
                 {{ item.role | role }}

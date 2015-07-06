@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 class AddressRepository extends EntityRepository
 {
 
-    public function getClients($userId)
+    public function getUserAddress($userId)
     {
         $res = $this->getEntityManager()->createQueryBuilder()
             ->select('p.title projectTitle, a.title AdrsTitle, COUNT(c.id) countClient')
@@ -17,7 +17,7 @@ class AddressRepository extends EntityRepository
             ->leftJoin('a.clients', 'c')
             ->leftJoin('c.user', 'u')
             ->leftJoin('a.project', 'p')
-            ->where('u.id = :userID')
+            ->where('u.id = :userId')
             ->groupBy('AdrsTitle')
             ->orderBy('projectTitle','ASC')
             ->setParameter('userId',$userId);
