@@ -32,7 +32,7 @@
             {% for item in items %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</td>
+                    <td><a href="{{ (path('stats_adrs_list',{'userId' : item.id})) }}"></a>{{ item.lastName }} {{ item.firstName }} {{ item.surName }}</td>
                     <td>
                         {{ item.role | role }}
                         {% if item.status != 0 %}

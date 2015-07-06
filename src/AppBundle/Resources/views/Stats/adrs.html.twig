@@ -1,0 +1,48 @@
+{% extends "AppBundle::layout.html.twig" %}
+
+{% block breadcrumb %}
+    <ul class="breadcrumb well">
+        <li>Статистика</li>
+        <li>Операторы</li>
+        <li>{{ user }}</li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="well">
+        <ul class="nav nav-tabs nav-justified">
+            <li role="presentation"><a href="{{ path('stats_projects_list') }}">Проекты</a></li>
+            <li role="presentation" class="active"><a href="{{ path('stats_agents_list') }}">Агенты</a></li>
+        </ul>
+        <br />
+        <table class="table" data-toggle="table"
+               data-sort-name="number"
+               data-sort-order="desc">
+            <thead>
+            <tr>
+                <th data-field="title"
+                    data-sortable="true">Проект</th>
+                <th data-field="type"
+                    data-sortable="true">Адрес</th>
+                <th data-field="type"
+                    data-sortable="true">Кол-во агентов</th>
+            </tr>
+            </thead>
+            {% for k,p in adrs %}
+                <tr>
+                    <td><b>{{ k }}</b></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% for a in p %}
+                    <tr>
+                        <td></td>
+                        <td>{{ a.adrs }}</td>
+                        <td>{{ a.count }}</td>
+                    </tr>
+
+                {% endfor %}
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

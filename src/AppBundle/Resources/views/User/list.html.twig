@@ -42,7 +42,7 @@
             {% for item in items %}
                 <tr>
                     <td>{{ item.id }}</td>
-                    <td>{{ item.firstName }} {{ item.lastName }} {{ item.surName }}</td>
+                    <td>{{ item.lastName }} {{ item.firstName }} {{ item.surName }}</td>
                     <td>
                         {{ item.roles | role }}
                         {% if item.status != 0 %}

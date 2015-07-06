@@ -57,5 +57,15 @@ class StatsController extends Controller
         return array('items' => $items);
     }
 
+    /**
+     * @Security("has_role('ROLE_AGENT')")
+     * @Route("/adrs/{userId}", name="stats_adrs_list")
+     * @Template()
+     */
+    public function adrsActions($userId){
+        $user = $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($userId);
+        $adrs = $this->getDoctrine()->getRepository('AppBundle:User')->getUserAddress($userId);
+        return array('user' => $user, 'adrs' => $adrs );
+    }
 
 }
