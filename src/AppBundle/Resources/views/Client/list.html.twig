@@ -39,13 +39,13 @@
                     <td>
                     <div class="dropdown">
                         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
-                            {{ item.status }}
+                            {{ item.loyalty }}
                             <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu4">
-                            {% for s in status %}
+                            {% for s in loyalty %}
                                 <li role="presentation">
-                                    <a role="menuitem" tabindex="-1" href="{{ path('client_status', { 'clientId' : item.id, 'statusId' : s.id }) }}">{{ s }}</a>
+                                    <a role="menuitem" tabindex="-1" href="{{ path('client_loyalty', { 'clientId' : item.id, 'loyalty' : s }) }}">{{ s }}</a>
                                 </li>
                             {% endfor %}
                         </ul>

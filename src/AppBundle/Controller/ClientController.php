@@ -41,7 +41,13 @@ class ClientController extends Controller{
             20
         );
 
-        return array('pagination' => $pagination, 'project' => $project, 'status' => $status);
+        $loyalty = array(
+            'Сторонник' => 'Сторонник',
+            'Противник' => 'Противник',
+            'Неопределился' => 'Неопределился',
+        );
+
+        return array('pagination' => $pagination, 'project' => $project, 'loyalty' => $loyalty);
     }
 
     /**
@@ -59,14 +65,15 @@ class ClientController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
-                if (isset($request->request->get('parameters')['appbundle_client']['adrs2'])){
+                if ($request->request->all()['appbundle_client']['adrs2']){
                     $adrs = new Address();
                     $adrs->setProject($project);
                     $adrs->setCreated(new \DateTime());
-                    $adrs->setTitle($request->request->get('parameters')['appbundle_client']['adrs2']));
+                    $adrs->setTitle($request->request->all()['appbundle_client']['adrs2']);
                     $em->persist($adrs);
                     $em->flush();
                     $em->refresh($adrs);
+                    $item->setAdrs($adrs);
                 }
                 $item->setProject($project);
                 $em->persist($item);
@@ -80,7 +87,7 @@ class ClientController extends Controller{
 
     /**
      * @Security("has_role('ROLE_AGENT')")
-     * @Route("/edit/{projectId}{id}", name="client_edit")
+     * @Route("/edit/{projectId}/{id}", name="client_edit")
      * @Template()
      */
     public function editAction(Request $request, $projectId, $id){
@@ -93,6 +100,16 @@ class ClientController extends Controller{
         if ($request->getMethod() == 'POST'){
             if ($formData->isValid()){
                 $item = $formData->getData();
+                if ($request->request->all()['appbundle_client']['adrs2']){
+                    $adrs = new Address();
+                    $adrs->setProject($project);
+                    $adrs->setCreated(new \DateTime());
+                    $adrs->setTitle($request->request->all()['appbundle_client']['adrs2']);
+                    $em->persist($adrs);
+                    $em->flush();
+                    $em->refresh($adrs);
+                    $item->setAdrs($adrs);
+                }
                 $em->flush($item);
                 $em->refresh($item);
                 return $this->redirect($this->generateUrl('client_list',array('projectId' => $project->getId())));
@@ -138,4 +155,19 @@ class ClientController extends Controller{
 
         return $this->redirect($request->headers->get('referer'));
     }
+
+    /**
+     * @Route("/loyalty/{clientId}/{loyalty}", name="client_loyalty")
+     * @Security("has_role('ROLE_AGENT')")
+     */
+    public function loyaltyAction(Request $request, $clientId, $loyalty){
+        $em = $this->getDoctrine()->getManager();
+        $item = $em->getRepository('AppBundle:'.self::ENTITY_NAME)->findOneById($clientId);
+        $item->setLoyalty($loyalty);
+        $em->flush();
+
+        return $this->redirect($request->headers->get('referer'));
+    }
+
+
 }
